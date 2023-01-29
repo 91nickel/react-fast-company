@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import "bootstrap/dist/css/bootstrap.css"
 import api from "./api"
 import Users from "./components/users"
-import Counter from "./components/counter"
+import SearchStatus from "./components/searchStatus"
 
 const App = () => {
     const _users = api.users.fetchAll()
@@ -28,7 +28,7 @@ const App = () => {
         <div className="container">
             <div className="row">
                 <div className="col-12">
-                    <Counter value={users.length}/>
+                    <SearchStatus value={users.length}/>
                     <Users users={users} onDelete={handleRemoveUser} onBookmark={handleBookmark}/>
                 </div>
             </div>

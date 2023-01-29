@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Counter = (props) => {
+const SearchStatus = (props) => {
 
     const renderPhrase = (number, text_forms = ['человек', 'человека', 'человек']) => {
         number = Math.abs(number) % 100;
@@ -24,4 +24,4 @@ const Counter = (props) => {
 
     return <h2><span className={`badge bg-${color}`}>{phrase}</span></h2>
 }
-export default Counter
+export default SearchStatus

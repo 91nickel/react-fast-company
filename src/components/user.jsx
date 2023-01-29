@@ -1,26 +1,16 @@
 import React from "react"
+import Qualitie from "./qualitie"
+import Bookmark from "./bookmark"
 
 const User = (props) => {
-
-    const renderUserQualities = () => {
-        return props.qualities.map(el => {
-            return <span key={el._id} className={`badge bg-${el.color}`}>{el.name}</span>
-        })
-    }
-
     return (
         <tr key={props._id}>
             <td>{props.name}</td>
-            <td>{renderUserQualities()}</td>
+            <td>{props.qualities.map(quality => <Qualitie {...quality} />)}</td>
             <td>{props.profession.name}</td>
             <td>{props.completedMeetings}</td>
             <td>{props.rate}/5</td>
-            <td>
-                <button type="button" className="btn btn-outline-dark btn-sm"
-                        onClick={() => props.onBookmark(props._id)}>
-                    <i className={`bi ${props.bookmark ? 'bi-bookmark-fill' : 'bi-bookmark'}`}></i>
-                </button>
-            </td>
+            <td>{<Bookmark id={props._id} status={props.bookmark} onBookmark={props.onBookmark} />}</td>
             <td>
                 <button type="button" className="btn btn-danger btn-sm"
                         onClick={() => props.onDelete(props._id)}>delete
