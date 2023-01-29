@@ -9,26 +9,26 @@ const App = () => {
     const [users, setUsers] = useState(_users)
 
     const handleRemoveUser = (id) => {
-        return setUsers(prevState => prevState.filter(user => user._id !== id))
+        return setUsers(users.filter(user => user._id !== id))
     }
 
     const handleBookmark = (id) => {
-        setUsers(prevState => {
-            return prevState.map(el => {
+        setUsers(
+            users.map(el => {
                 if (id === el._id) {
                     el.bookmark = !el.bookmark
                     return el
                 }
                 return el;
             })
-        })
+        )
     }
 
     return (
         <div className="container">
             <div className="row">
                 <div className="col-12">
-                    {/*<Counter value={users.length}/>*/}
+                    <Counter value={users.length}/>
                     <Users users={users} onDelete={handleRemoveUser} onBookmark={handleBookmark}/>
                 </div>
             </div>

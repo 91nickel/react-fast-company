@@ -17,14 +17,11 @@ const Counter = (props) => {
         return text_forms[2];
     }
 
-    const renderCounter = () => {
-        const phrase = props.value > 0
-            ? `${props.value} ${renderPhrase(props.value, ['человек', 'человека', 'человек'])} ${renderPhrase(props.value, ['тусанет', 'тусанут', 'тусанут'])} с тобой сегодня`
-            : 'Никто с тобой не тусанет'
-        const color = props.value > 0 ? 'primary' : 'danger'
-        return <h2><span className={`badge bg-${color}`}>{phrase}</span></h2>
-    }
+    const phrase = props.value > 0
+        ? `${props.value} ${renderPhrase(props.value, ['человек', 'человека', 'человек'])} ${renderPhrase(props.value, ['тусанет', 'тусанут', 'тусанут'])} с тобой сегодня`
+        : 'Никто с тобой не тусанет'
+    const color = props.value > 0 ? 'primary' : 'danger'
 
-    return {renderCounter}
+    return <h2><span className={`badge bg-${color}`}>{phrase}</span></h2>
 }
 export default Counter

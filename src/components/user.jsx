@@ -1,7 +1,6 @@
 import React from "react"
 
 const User = (props) => {
-    console.log('User', props)
 
     const renderUserQualities = () => {
         return props.qualities.map(el => {

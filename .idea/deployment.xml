@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="fast-company">
+  <component name="PublishConfigData" serverName="localhost">
     <serverData>
-      <paths name="fast-company">
+      <paths name="OS">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
-      <paths name="foroffice-sites">
+      <paths name="localhost">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
-      <paths name="test.foroffice-ycloud">
+      <paths name="sites.foroffice.ru">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="test.foroffice.ru">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />
@@ -24,6 +31,13 @@
         </serverdata>
       </paths>
       <paths name="www.foroffice.ru">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Тестовый">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />
