@@ -5,8 +5,7 @@ import Users from './components/users'
 import SearchStatus from './components/searchStatus'
 
 const App = () => {
-    const _users = api.users.fetchAll()
-    const [users, setUsers] = useState(_users)
+    const [users, setUsers] = useState(api.users.fetchAll())
 
     const handleRemoveUser = (id) => {
         return setUsers(users.filter((user) => user._id !== id))
@@ -39,4 +38,5 @@ const App = () => {
         </div>
     )
 }
+
 export default App
