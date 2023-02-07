@@ -1,40 +1,60 @@
+/* eslint-disable */
+
 import React, { useState, useEffect } from 'react'
 import User from './user'
 import Pagination from './pagination'
 import paginate from '../utils/paginate'
 import PropTypes from 'prop-types'
 import GroupList from './groupList'
+import SearchStatus from './searchStatus'
 import api from '../api'
 
-const Users = ({users, onDelete, onBookmark}) => {
+const Users = ({users: allUsers, onDelete, onBookmark}) => {
     const pageSize = 4
-    const count = users.length
     const [currentPage, setCurrentPage] = useState(1)
     const [professions, setProfessions] = useState()
+    const [currentProfession, setCurrentProfession] = useState()
 
     useEffect(() => {
-        console.log('send request')
-        // api.professions.fetchAll().then(data => setProfessions(data))
+        api.professions.fetchAll().then(data => setProfessions(data))
     }, [])
-    // useEffect(() => {
-    //     console.log(professions)
-    // }, [professions])
+
+    useEffect(() => {
+        setCurrentPage(1)
+    }, [currentProfession])
 
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex)
     }
 
-    const handleProfessionSelect = (params) => {
-        console.log('handleProfessionSelect', params)
+    const handleProfessionSelect = item => {
+        setCurrentProfession(item)
     }
+    const clearFilter = () => setCurrentProfession(undefined)
 
-    const userCrop = paginate(users, currentPage, pageSize)
+    const filteredUsers = currentProfession
+        ? allUsers.filter(user => _.isEqual(user.profession, currentProfession))
+        : allUsers
+    const userCrop = paginate(filteredUsers, currentPage, pageSize)
+    const count = filteredUsers.length
+
     return (
-        <>
-            {/* <GroupList items={professions} onItemSelect={handleProfessionSelect}/> */}
+        <div className="d-flex">
+            <div className="flex-shrink-0 p-3">
+                <GroupList items={professions}
+                           currentItem={currentProfession}
+                           valueProperty="_id"
+                           contentProperty="name"
+                           onItemSelect={handleProfessionSelect}
+                />
+                {count > 0 && <button className="btn btn-secondary mt-2" type="button" onClick={clearFilter}>Сбросить фильтр</button>}
+            </div>
+
             {count > 0 &&
-            <table className="table">
-                <thead>
+            <div className="d-flex flex-column">
+                <SearchStatus value={count}/>
+                <table className="table">
+                    <thead>
                     <tr>
                         <th scope="col">Имя</th>
                         <th scope="col">Качества</th>
@@ -44,16 +64,21 @@ const Users = ({users, onDelete, onBookmark}) => {
                         <th scope="col">Избранное</th>
                         <th scope="col">x</th>
                     </tr>
-                </thead>
-                <tbody>{userCrop.map((user) => (<User key={user._id} {...user} onDelete={onDelete} onBookmark={onBookmark}/>))}</tbody>
-            </table>}
-            {<Pagination
-                currentPage={currentPage}
-                pageSize={pageSize}
-                itemsCount={count}
-                onPageChange={handlePageChange}
-            />}
-        </>
+                    </thead>
+                    <tbody>{userCrop.map((user) => (
+                        <User key={user._id} {...user} onDelete={onDelete} onBookmark={onBookmark}/>))}</tbody>
+                </table>
+                <div className="d-flex justify-content-center">
+                    <Pagination
+                        currentPage={currentPage}
+                        pageSize={pageSize}
+                        itemsCount={count}
+                        onPageChange={handlePageChange}
+                    />
+                </div>
+            </div>
+            }
+        </div>
     )
 }
 
