@@ -1,19 +1,24 @@
-/* eslint-disable */
-
 import React, { useState, useEffect } from 'react'
-import User from './user'
+// import PropTypes from 'prop-types'
+import api from '../api'
+import UsersTable from './usersTable'
 import Pagination from './pagination'
 import paginate from '../utils/paginate'
-import PropTypes from 'prop-types'
 import GroupList from './groupList'
 import SearchStatus from './searchStatus'
-import api from '../api'
+import _ from 'lodash'
 
-const Users = ({users: allUsers, onDelete, onBookmark}) => {
+const Users = () => {
     const pageSize = 4
-    const [currentPage, setCurrentPage] = useState(1)
+    const [users, setUsers] = useState([])
     const [professions, setProfessions] = useState()
     const [currentProfession, setCurrentProfession] = useState()
+    const [currentPage, setCurrentPage] = useState(1)
+    const [currentSort, setCurrentSort] = useState({path: 'name', order: 'asc'})
+
+    useEffect(() => {
+        api.users.fetchAll().then(data => setUsers(data))
+    }, [])
 
     useEffect(() => {
         api.professions.fetchAll().then(data => setProfessions(data))
@@ -23,6 +28,22 @@ const Users = ({users: allUsers, onDelete, onBookmark}) => {
         setCurrentPage(1)
     }, [currentProfession])
 
+    const handleRemoveUser = (id) => {
+        return setUsers(users.filter((user) => user._id !== id))
+    }
+
+    const handleBookmark = (id) => {
+        setUsers(
+            users.map((el) => {
+                if (id === el._id) {
+                    el.bookmark = !el.bookmark
+                    return el
+                }
+                return el
+            })
+        )
+    }
+
     const handlePageChange = (pageIndex) => {
         setCurrentPage(pageIndex)
     }
@@ -30,44 +51,46 @@ const Users = ({users: allUsers, onDelete, onBookmark}) => {
     const handleProfessionSelect = item => {
         setCurrentProfession(item)
     }
-    const clearFilter = () => setCurrentProfession(undefined)
+
+    const clearFilter = () => {
+        setCurrentProfession(undefined)
+    }
+
+    const handleSort = (item) => {
+        setCurrentSort(item)
+    }
 
     const filteredUsers = currentProfession
-        ? allUsers.filter(user => _.isEqual(user.profession, currentProfession))
-        : allUsers
-    const userCrop = paginate(filteredUsers, currentPage, pageSize)
+        ? users.filter(user => _.isEqual(user.profession, currentProfession))
+        : users
     const count = filteredUsers.length
+    const sortedUsers = _.orderBy(filteredUsers, currentSort.path, currentSort.order)
+    const userCrop = paginate(sortedUsers, currentPage, pageSize)
 
     return (
         <div className="d-flex">
             <div className="flex-shrink-0 p-3">
-                <GroupList items={professions}
-                           currentItem={currentProfession}
-                           valueProperty="_id"
-                           contentProperty="name"
-                           onItemSelect={handleProfessionSelect}
+                <GroupList
+                    items={professions}
+                    currentItem={currentProfession}
+                    valueProperty="_id"
+                    contentProperty="name"
+                    onItemSelect={handleProfessionSelect}
                 />
-                {count > 0 && <button className="btn btn-secondary mt-2" type="button" onClick={clearFilter}>Сбросить фильтр</button>}
+                {count > 0 &&
+                <button className="btn btn-secondary mt-2" type="button" onClick={clearFilter}>Сбросить фильтр</button>}
             </div>
 
             {count > 0 &&
             <div className="d-flex flex-column">
                 <SearchStatus value={count}/>
-                <table className="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Имя</th>
-                        <th scope="col">Качества</th>
-                        <th scope="col">Профессия</th>
-                        <th scope="col">Встретился, раз</th>
-                        <th scope="col">Оценка</th>
-                        <th scope="col">Избранное</th>
-                        <th scope="col">x</th>
-                    </tr>
-                    </thead>
-                    <tbody>{userCrop.map((user) => (
-                        <User key={user._id} {...user} onDelete={onDelete} onBookmark={onBookmark}/>))}</tbody>
-                </table>
+                <UsersTable
+                    users={userCrop}
+                    currentSort={currentSort}
+                    onDelete={handleRemoveUser}
+                    onBookmark={handleBookmark}
+                    onSort={handleSort}
+                />
                 <div className="d-flex justify-content-center">
                     <Pagination
                         currentPage={currentPage}
@@ -82,10 +105,6 @@ const Users = ({users: allUsers, onDelete, onBookmark}) => {
     )
 }
 
-Users.propTypes = {
-    users: PropTypes.array.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    onBookmark: PropTypes.func.isRequired
-}
+Users.propTypes = {}
 
 export default Users
