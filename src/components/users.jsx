@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-// import PropTypes from 'prop-types'
 import api from '../api'
 import UsersTable from './usersTable'
 import Pagination from './pagination'
@@ -67,9 +66,12 @@ const Users = () => {
     const sortedUsers = _.orderBy(filteredUsers, currentSort.path, currentSort.order)
     const userCrop = paginate(sortedUsers, currentPage, pageSize)
 
+    if (!count)
+        return <div className="row mt-3"><div className="col-12"><h2>Загрузка ...</h2></div></div>
+
     return (
-        <div className="d-flex">
-            <div className="flex-shrink-0 p-3">
+        <div className="row mt-3">
+            <div className="col-2">
                 <GroupList
                     items={professions}
                     currentItem={currentProfession}
@@ -82,7 +84,7 @@ const Users = () => {
             </div>
 
             {count > 0 &&
-            <div className="d-flex flex-column">
+            <div className="col-10 d-flex flex-column">
                 <SearchStatus value={count}/>
                 <UsersTable
                     users={userCrop}
@@ -104,7 +106,5 @@ const Users = () => {
         </div>
     )
 }
-
-Users.propTypes = {}
 
 export default Users
