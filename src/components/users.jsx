@@ -6,6 +6,7 @@ import paginate from '../utils/paginate'
 import GroupList from './groupList'
 import SearchStatus from './searchStatus'
 import _ from 'lodash'
+import SearchString from './searchString'
 
 const Users = () => {
     const pageSize = 4
@@ -14,6 +15,7 @@ const Users = () => {
     const [currentProfession, setCurrentProfession] = useState()
     const [currentPage, setCurrentPage] = useState(1)
     const [currentSort, setCurrentSort] = useState({path: 'name', order: 'asc'})
+    const [searchQuery, setSearchQuery] = useState('')
 
     useEffect(() => {
         api.users.fetchAll().then(data => setUsers(data))
@@ -22,6 +24,10 @@ const Users = () => {
     useEffect(() => {
         api.professions.fetchAll().then(data => setProfessions(data))
     }, [])
+
+    useEffect(() => {
+        setCurrentPage(1)
+    }, [searchQuery])
 
     useEffect(() => {
         setCurrentPage(1)
@@ -49,6 +55,7 @@ const Users = () => {
 
     const handleProfessionSelect = item => {
         setCurrentProfession(item)
+        clearSearch()
     }
 
     const clearFilter = () => {
@@ -59,15 +66,34 @@ const Users = () => {
         setCurrentSort(item)
     }
 
-    const filteredUsers = currentProfession
-        ? users.filter(user => _.isEqual(user.profession, currentProfession))
-        : users
+    const handleSearch = (value) => {
+        setSearchQuery(value)
+        clearFilter()
+    }
+
+    const clearSearch = () => {
+        setSearchQuery('')
+    }
+
+    let filteredUsers
+    if (currentProfession) {
+        filteredUsers = users.filter(user => _.isEqual(user.profession, currentProfession))
+    } else if (!!searchQuery) {
+        const regexp = new RegExp(searchQuery, 'ig')
+        const searchResults = users.filter(user => regexp.test(user.name))
+        filteredUsers = searchResults.length > 0 ? searchResults : users
+    } else {
+        filteredUsers = users
+    }
     const count = filteredUsers.length
     const sortedUsers = _.orderBy(filteredUsers, currentSort.path, currentSort.order)
     const userCrop = paginate(sortedUsers, currentPage, pageSize)
 
-    if (!count)
-        return <div className="row mt-3"><div className="col-12"><h2>Загрузка ...</h2></div></div>
+    if (!count) {
+        return <div className="row mt-3">
+            <div className="col-12"><h2>Загрузка ...</h2></div>
+        </div>
+    }
 
     return (
         <div className="row mt-3">
@@ -80,12 +106,18 @@ const Users = () => {
                     onItemSelect={handleProfessionSelect}
                 />
                 {count > 0 &&
-                <button className="btn btn-secondary mt-2" type="button" onClick={clearFilter}>Сбросить фильтр</button>}
+                <button
+                    className="btn btn-secondary mt-2"
+                    type="button"
+                    disabled={!currentProfession}
+                    onClick={clearFilter}
+                >Сбросить фильтр</button>}
             </div>
 
             {count > 0 &&
             <div className="col-10 d-flex flex-column">
                 <SearchStatus value={count}/>
+                <SearchString query={searchQuery} onSubmit={handleSearch}/>
                 <UsersTable
                     users={userCrop}
                     currentSort={currentSort}

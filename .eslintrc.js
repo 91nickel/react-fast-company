@@ -18,5 +18,6 @@ module.exports = {
         'comma-dangle': 'off',
         "react/no-unescaped-entities": 0,
         // 'no-unused-vars': 0,
+        'no-extra-boolean-cast': 'off',
     }
 }
