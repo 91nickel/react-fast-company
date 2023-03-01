@@ -1,19 +1,16 @@
 import React from 'react'
-import 'bootstrap/dist/css/bootstrap.css'
-import Users from './components/users'
-import User from './components/user'
-import NavBar from './components/navBar'
-import Home from './components/home'
-import Login from './components/login'
-import NotFound from './components/not-found'
+import Users from 'layouts/users'
+import Home from 'layouts/home'
+import Login from 'layouts/login'
+import NotFound from 'layouts/not-found'
+import NavBar from 'components/ui/navBar'
 import { Route, Switch, Redirect } from 'react-router-dom'
 
 const App = () => {
     const pages = [
         {name: 'Home', path: '/', exact: true, nav: true, component: Home},
-        {name: 'Login', path: '/login', exact: false, nav: true, component: Login},
-        {name: 'Users', path: '/users', exact: true, nav: true, component: Users},
-        {name: 'User', path: '/users', params: '/:id?', exact: false, nav: false, component: (params) => <User id={params.match.params.id}/>},
+        {name: 'Login', path: '/login', params: '/:type?', exact: false, nav: true, component: (params) => <Login id={params.match.params.type}/>},
+        {name: 'Users', path: '/users', params: '/:id?', exact: false, nav: true, component: (params) => <Users id={params.match.params.id}/>},
         {name: 'Not Found', path: '/404', exact: false, nav: false, component: NotFound},
     ]
 

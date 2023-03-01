@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import api from '../api'
-import UsersTable from './usersTable'
-import Pagination from './pagination'
-import paginate from '../utils/paginate'
-import GroupList from './groupList'
-import SearchStatus from './searchStatus'
 import _ from 'lodash'
-import SearchString from './searchString'
+import api from 'api'
+import UsersTable from 'components/ui/usersTable'
+import Pagination from 'components/common/pagination'
+import GroupList from 'components/common/groupList'
+import SearchStatus from 'components/ui/searchStatus'
+import SearchString from 'components/ui/searchString'
+import paginate from 'utils/paginate'
 
-const Users = () => {
+const UsersListPage = () => {
     const pageSize = 4
     const [users, setUsers] = useState([])
     const [professions, setProfessions] = useState()
@@ -139,4 +139,4 @@ const Users = () => {
     )
 }
 
-export default Users
+export default UsersListPage

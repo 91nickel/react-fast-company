@@ -1,14 +1,13 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react'
-import TextField from './textField'
-import { validator } from '../utils/validator'
+import TextField from 'components/common/form/textField'
+import { validator } from 'utils/validator'
+import CheckboxField from '../common/form/checkboxField'
 
-const Login = () => {
+const LoginForm = () => {
+    const [data, setData] = useState({email: '', password: '', stayOn: false})
     const [errors, setErrors] = useState({})
-    const [data, setData] = useState({
-        email: '',
-        password: '',
-    })
+
     useEffect(() => {
         validate()
     }, [data])
@@ -39,8 +38,12 @@ const Login = () => {
         },
     }
 
-    const handleChange = ({target}) => {
-        setData(prevState => ({...prevState, [target.name]: target.value}))
+    const handleChange = (target) => {
+        setData(prevState => ({
+                ...prevState,
+                [target.name]: target.value,
+            }
+        ))
     }
 
     const handleSubmit = (event) => {
@@ -58,19 +61,24 @@ const Login = () => {
     const isValid = Object.keys(errors).length === 0
 
     return (
-        <div className="row">
-            <div className="col-12 col-md-6 offset-md-3 mt-5 p-4 shadow">
-                <h3 className="mb-4">Login</h3>
-                <form className="aa" onSubmit={handleSubmit}>
-                    <TextField label="Электронная почта" type="text" name="email" value={data.email} error={errors.email}
-                               onChange={handleChange}/>
-                    <TextField label="Пароль" type="password" name="password" value={data.password} error={errors.password}
-                               onChange={handleChange}/>
-                    <button className="btn btn-primary w-100 mx-auto" type="submit" disabled={!isValid}>Отправить</button>
-                </form>
-            </div>
-        </div>
+        <form className="aa" onSubmit={handleSubmit}>
+            <TextField label="Электронная почта" type="text" name="email" value={data.email} error={errors.email}
+                       onChange={handleChange}/>
+            <TextField label="Пароль" type="password" name="password" value={data.password} error={errors.password}
+                       onChange={handleChange}/>
+            <CheckboxField
+                label=""
+                name="stayOn"
+                value={data.stayOn}
+                error={errors.stayOn}
+                onChange={handleChange}
+            >
+                Запомнить меня
+            </CheckboxField>
+
+            <button className="btn btn-primary w-100 mx-auto" type="submit" disabled={!isValid}>Отправить</button>
+        </form>
     )
 }
 
-export default Login
+export default LoginForm

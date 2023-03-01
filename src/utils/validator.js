@@ -4,11 +4,15 @@ export function validator (data, config) {
 
     function validate (validateMethod, data, config) {
         // console.log('validate', validateMethod, data, config)
-        let statusValidate;
+        let statusValidate
         switch (validateMethod) {
-            case 'isRequired':
-                statusValidate = data.trim() === ''
+            case 'isRequired': {
+                if (typeof data === 'boolean')
+                    statusValidate = !data
+                else
+                    statusValidate = data.trim() === ''
                 break
+            }
             case 'isEmail':
                 statusValidate = !/^\S+@\S+\.\S+$/.test(data)
                 break
