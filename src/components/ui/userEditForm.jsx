@@ -54,6 +54,7 @@ const UserEditForm = ({id}) => {
         event.preventDefault()
         if (!validate() || !hasDifference()) return false
         api.users.update(id, createUserFields())
+        window.location = `/users/${id}`
         console.log('handleSubmit()->userFields', createUserFields())
     }
 
