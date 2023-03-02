@@ -7,6 +7,7 @@
     <file url="file://$PROJECT_DIR$/src/components/common/table/table.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/common/table/tableBody.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/common/table/tableHeader.jsx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/components/page/userEditPage/userEditPage.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/page/userPage/userPage.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/page/usersListPage/usersListPage.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/ui/loginForm.jsx" charset="UTF-8" />
@@ -15,6 +16,7 @@
     <file url="file://$PROJECT_DIR$/src/components/ui/registerForm.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/ui/searchStatus.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/ui/searchString.jsx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/components/ui/userEditForm.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/ui/usersTable.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/layouts/login.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/utils/validator.js" charset="UTF-8" />

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import api from 'api'
 import QualitiesList from 'components/ui/qualities/qualitiesList'
@@ -9,6 +9,7 @@ const UserPage = ({id}) => {
     useEffect(() => {
         api.users.getById(id).then(data => setUser(data))
     }, [])
+    const loc = useLocation();
 
     if (!user)
         return <div className="col-12 col-md-3 mt-5"><h2>Загрузка ...</h2></div>
@@ -31,6 +32,9 @@ const UserPage = ({id}) => {
                 <li className="list-group-item">
                     <b>Рейтинг: </b>
                     <span>{user.rate}</span>
+                </li>
+                <li className="list-group-item">
+                    <Link to={`${loc.pathname}/edit`} className="btn btn-warning">Изменить</Link>
                 </li>
             </ul>
             <div className="card-footer">

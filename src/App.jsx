@@ -10,7 +10,7 @@ const App = () => {
     const pages = [
         {name: 'Home', path: '/', exact: true, nav: true, component: Home},
         {name: 'Login', path: '/login', params: '/:type?', exact: false, nav: true, component: (params) => <Login id={params.match.params.type}/>},
-        {name: 'Users', path: '/users', params: '/:id?', exact: false, nav: true, component: (params) => <Users id={params.match.params.id}/>},
+        {name: 'Users', path: '/users', params: '/:id?/:type?', exact: false, nav: true, component: (params) => <Users id={params.match.params.id} mode={params.match.params.type}/>},
         {name: 'Not Found', path: '/404', exact: false, nav: false, component: NotFound},
     ]
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const SelectField = ({label, name, value, error, onChange, options, defaultOption}) => {
+const SelectField = ({label, name, value, defaultValue, error, onChange, options}) => {
     const arOptions = !Array.isArray(options) && typeof options === 'object' ?
         Object.keys(options).map(key => ({name: options[key].name, value: options[key].value})) :
         options
@@ -27,7 +27,7 @@ const SelectField = ({label, name, value, error, onChange, options, defaultOptio
                 value={value}
                 onChange={handleChange}
             >
-                <option disabled value="">{defaultOption}</option>
+                <option disabled value="">{defaultValue}</option>
                 {arOptions.map((opt, i) => <option key={`op-${i}`} value={opt.value}>{opt.name}</option>)}
             </select>
             {error && <div className="invalid-feedback">{error}</div>}
@@ -36,16 +36,16 @@ const SelectField = ({label, name, value, error, onChange, options, defaultOptio
 }
 SelectField.defaultProps = {
     options: [],
-    defaultOption: 'Choose your destiny...',
+    defaultValue: 'Choose your destiny...',
 }
 SelectField.propTypes = {
     label: PropTypes.string,
     name: PropTypes.string,
     value: PropTypes.string,
+    defaultValue: PropTypes.string,
     error: PropTypes.string,
     onChange: PropTypes.func,
     options: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.objectOf(PropTypes.object)]),
-    defaultOption: PropTypes.string,
 }
 
 export default SelectField

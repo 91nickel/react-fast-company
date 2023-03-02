@@ -12,7 +12,7 @@ module.exports = {
     plugins: ['react'],
     rules: {
         indent: ['error', 4],
-        curly: ['error', 'multi-or-nest', 'consistent'],
+        curly: ['off'],
         'space-before-function-paren': 0,
         'object-curly-spacing': 0,
         'comma-dangle': 'off',

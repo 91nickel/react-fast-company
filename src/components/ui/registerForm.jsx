@@ -83,7 +83,12 @@ const RegisterForm = () => {
         event.preventDefault()
         const isValid = validate()
         if (!isValid) return
-        console.log(data)
+        const userFields = {
+            ...data,
+            profession: professions.find(p => p._id === data.profession),
+            qualities: Object.values(qualities).filter(q => data.qualities.includes(q._id)),
+        }
+        console.log('userFields', userFields)
     }
 
     const validate = () => {
@@ -92,8 +97,6 @@ const RegisterForm = () => {
         return Object.keys(errors).length === 0
     }
     const isValid = Object.keys(errors).length === 0
-
-    console.log()
 
     return (
         <form className="aa" onSubmit={handleSubmit}>
@@ -127,6 +130,7 @@ const RegisterForm = () => {
                 label="Выберите вашу профессию"
                 name="profession"
                 value={data.profession}
+                defaultValue="Choose your destiny..."
                 error={errors.profession}
                 options={professions.map(p => ({name: p.name, value: p._id}))}
                 onChange={handleChange}
