@@ -15,9 +15,9 @@ module.exports = {
         curly: ['off'],
         'space-before-function-paren': 0,
         'object-curly-spacing': 0,
-        'comma-dangle': 'off',
         "react/no-unescaped-entities": 0,
-        // 'no-unused-vars': 0,
         'no-extra-boolean-cast': 'off',
+        'comma-dangle': 'off',
+        // 'no-unused-vars': 0,
     }
 }

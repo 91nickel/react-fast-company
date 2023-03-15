@@ -3,42 +3,81 @@ import { Link, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import api from 'api'
 import QualitiesList from 'components/ui/qualities/qualitiesList'
+import CommentsList from '../../ui/comments/commentsList'
 
 const UserPage = ({id}) => {
     const [user, setUser] = useState()
     useEffect(() => {
         api.users.getById(id).then(data => setUser(data))
     }, [])
-    const loc = useLocation();
+    const loc = useLocation()
 
     if (!user)
-        return <div className="col-12 col-md-3 mt-5"><h2>Загрузка ...</h2></div>
+        return <h2 className="mt-5">Загрузка ...</h2>
 
     return (user &&
-        <div className="card col-12 col-md-3 mt-5">
-            <div className="card-header"><h5>{user.name}</h5></div>
-            <ul className="list-group list-group-flush">
-                <li className="list-group-item">
-                    <b>Профессия: </b>
-                    <span>{user.profession.name}</span>
-                </li>
-                <li className="list-group-item">
-                    <QualitiesList qualities={user.qualities}/>
-                </li>
-                <li className="list-group-item">
-                    <b>Встретился раз: </b>
-                    <span>{user.completedMeetings}</span>
-                </li>
-                <li className="list-group-item">
-                    <b>Рейтинг: </b>
-                    <span>{user.rate}</span>
-                </li>
-                <li className="list-group-item">
-                    <Link to={`${loc.pathname}/edit`} className="btn btn-warning">Изменить</Link>
-                </li>
-            </ul>
-            <div className="card-footer">
-                <Link to="/users" className="btn btn-primary">Все пользователи</Link>
+        <div className="row gutters-sm">
+            <div className="col-md-4 mb-3">
+                <div className="card mb-3">
+                    <div className="card-body">
+                        <button
+                            className="position-absolute top-0 end-0 btn btn-light btn-sm"
+                            onClick={() => location.replace(`${loc.pathname}/edit`)}
+                        >
+                            <i className="bi bi-gear"/>
+                        </button>
+                        <div className="d-flex flex-column align-items-center text-center position-relative">
+                            <img
+                                src={`https://avatars.dicebear.com/api/avataaars/${(
+                                    Math.random() + 1
+                                )
+                                    .toString(36)
+                                    .substring(7)}.svg`}
+                                className="rounded-circle shadow-1-strong me-3"
+                                alt="avatar"
+                                width="150"
+                                height="150"
+                            />
+                            <div className="mt-3">
+                                <h4>{user.name}</h4>
+                                <p className="text-secondary mb-1">{user.profession.name}</p>
+                                <div className="text-muted">
+                                    <i className="bi bi-caret-down-fill text-primary" role="button"/>
+                                    <i className="bi bi-caret-up text-secondary" role="button"/>
+                                    <span className="ms-2">{user.rate}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="card mb-3">
+                    <div className="card-body d-flex flex-column justify-content-center text-center">
+                        <h5 className="card-title">
+                            <span>Qualities</span>
+                        </h5>
+                        <p className="card-text">
+                            <QualitiesList qualities={user.qualities}/>
+                        </p>
+                    </div>
+                </div>
+                <div className="card mb-3">
+                    <div className="card mb-3">
+                        <div className="card-body d-flex flex-column justify-content-center text-center">
+                            <h5 className="card-title">
+                                <span>Completed meetings</span>
+                            </h5>
+                            <h1 className="display-1">{user.completedMeetings}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div className="card mb-3">
+                    <div className="card-body d-flex flex-column justify-content-center text-center">
+                        <Link to="/users" className="btn btn-primary">Назад</Link>
+                    </div>
+                </div>
+            </div>
+            <div className="col-md-8">
+                <CommentsList id={id}/>
             </div>
         </div>
     )

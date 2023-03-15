@@ -45,7 +45,7 @@ const UserEditForm = ({id}) => {
         return {
             ...user,
             ...data,
-            profession: professions.find(p => p._id === data.profession),
+            profession: Object.values(professions).find(p => p._id === data.profession),
             qualities: Object.values(qualities).filter(q => data.qualities.includes(q._id)),
         }
     }
@@ -79,11 +79,11 @@ const UserEditForm = ({id}) => {
 
     const isValid = Object.keys(errors).length === 0
 
-    if (!user || !professions.length || !Object.values(qualities).length)
+    if (!user || !Object.values(professions).length || !Object.values(qualities).length)
         return <h2>Загрузка ...</h2>
 
     return (
-        <form className="aa" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <TextField
                 label="Имя"
                 type="text"
@@ -116,7 +116,7 @@ const UserEditForm = ({id}) => {
                 value={data.profession}
                 defaultValue="Choose your destiny..."
                 error={errors.profession}
-                options={professions.map(p => ({name: p.name, value: p._id}))}
+                options={Object.values(professions).map(p => ({name: p.name, value: p._id}))}
                 onChange={handleChange}
             />
             <MultiSelectField

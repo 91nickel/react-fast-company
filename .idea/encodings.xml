@@ -10,6 +10,9 @@
     <file url="file://$PROJECT_DIR$/src/components/page/userEditPage/userEditPage.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/page/userPage/userPage.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/page/usersListPage/usersListPage.jsx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/components/ui/comments/comment.jsx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/components/ui/comments/commentForm.jsx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/components/ui/comments/commentsList.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/ui/loginForm.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/ui/navBar.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/ui/qualities/qualitiesList.jsx" charset="UTF-8" />
