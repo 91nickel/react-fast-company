@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import api from 'api'
+// import api from 'api'
 import QualitiesList from 'components/ui/qualities/qualitiesList'
-import CommentsList from '../../ui/comments/commentsList'
+import CommentsList from 'components/ui/comments/commentsList'
+import { useUser } from 'hooks/useUsers'
 
 const UserPage = ({id}) => {
-    const [user, setUser] = useState()
-    useEffect(() => {
-        api.users.getById(id).then(data => setUser(data))
-    }, [])
+    const {getUser} = useUser()
+    const user = getUser(id);
+    // const [user, setUser] = useState()
+    // useEffect(() => {
+    //     api.users.getById(id).then(data => setUser(data))
+    // }, [])
+
+
     const loc = useLocation()
 
     if (!user)

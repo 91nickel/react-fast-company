@@ -7,7 +7,7 @@ import GroupList from 'components/common/groupList'
 import SearchStatus from 'components/ui/searchStatus'
 import SearchString from 'components/ui/searchString'
 import paginate from 'utils/paginate'
-import { useUser } from '../../../hooks/useUsers'
+import { useUser } from 'hooks/useUsers'
 
 const UsersListPage = () => {
     const pageSize = 4
@@ -26,11 +26,11 @@ const UsersListPage = () => {
 
     useEffect(() => {
         setCurrentPage(1)
-    }, [searchQuery])
+    }, [searchQuery, currentProfession])
 
-    useEffect(() => {
-        setCurrentPage(1)
-    }, [currentProfession])
+    // useEffect(() => {
+    //     setCurrentPage(1)
+    // }, [currentProfession])
 
     const handleDelete = (id) => {
         // return setUsers(users.filter((user) => user._id !== id))
