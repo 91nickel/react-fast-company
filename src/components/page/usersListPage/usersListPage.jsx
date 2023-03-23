@@ -7,19 +7,18 @@ import GroupList from 'components/common/groupList'
 import SearchStatus from 'components/ui/searchStatus'
 import SearchString from 'components/ui/searchString'
 import paginate from 'utils/paginate'
+import { useUser } from '../../../hooks/useUsers'
 
 const UsersListPage = () => {
     const pageSize = 4
-    const [users, setUsers] = useState([])
+    // const [users, setUsers] = useState([])
     const [professions, setProfessions] = useState()
     const [currentProfession, setCurrentProfession] = useState()
     const [currentPage, setCurrentPage] = useState(1)
     const [currentSort, setCurrentSort] = useState({path: 'name', order: 'asc'})
     const [searchQuery, setSearchQuery] = useState('')
 
-    useEffect(() => {
-        api.users.fetchAll().then(data => setUsers(data))
-    }, [])
+    const {users} = useUser()
 
     useEffect(() => {
         api.professions.fetchAll().then(data => setProfessions(data))
@@ -33,20 +32,21 @@ const UsersListPage = () => {
         setCurrentPage(1)
     }, [currentProfession])
 
-    const handleRemoveUser = (id) => {
-        return setUsers(users.filter((user) => user._id !== id))
+    const handleDelete = (id) => {
+        // return setUsers(users.filter((user) => user._id !== id))
+        console.log('handleDelete()', id)
     }
 
     const handleBookmark = (id) => {
-        setUsers(
-            users.map((el) => {
-                if (id === el._id) {
-                    el.bookmark = !el.bookmark
-                    return el
-                }
+        const newArray = users.map((el) => {
+            if (id === el._id) {
+                el.bookmark = !el.bookmark
                 return el
-            })
-        )
+            }
+            return el
+        })
+        // setUsers(newArray)
+        console.log(newArray)
     }
 
     const handlePageChange = (pageIndex) => {
@@ -89,6 +89,7 @@ const UsersListPage = () => {
     const sortedUsers = _.orderBy(filteredUsers, currentSort.path, currentSort.order)
     const userCrop = paginate(sortedUsers, currentPage, pageSize)
 
+    // console.log(filteredUsers)
     if (!count) {
         return <div className="row mt-3">
             <div className="col-12"><h2>Загрузка ...</h2></div>
@@ -121,7 +122,7 @@ const UsersListPage = () => {
                 <UsersTable
                     users={userCrop}
                     currentSort={currentSort}
-                    onDelete={handleRemoveUser}
+                    onDelete={handleDelete}
                     onBookmark={handleBookmark}
                     onSort={handleSort}
                 />

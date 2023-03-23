@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Bookmark from 'components/common/bookmark'
 import Qualities from 'components/ui/qualities'
-import Table, {TableHeader, TableBody} from 'components/common/table'
+import Table, { TableHeader, TableBody } from 'components/common/table'
+import Profession from './profession'
 
 const UsersTable = ({users, currentSort, onSort, onDelete, onBookmark, ...rest}) => {
     const columns = {
@@ -20,7 +21,11 @@ const UsersTable = ({users, currentSort, onSort, onDelete, onBookmark, ...rest})
                 return <Qualities qualities={user.qualities}/>
             }
         },
-        profession: {path: 'profession.name', name: 'Профессия'},
+        profession: {
+            // path: 'profession.name',
+            name: 'Профессия',
+            component: (user) => <Profession id={user.profession}/>,
+        },
         completedMeetings: {path: 'completedMeetings', name: 'Встретился, раз'},
         rate: {path: 'rate', name: 'Оценка'},
         bookmark: {
