@@ -17,6 +17,7 @@ const UserProvider = ({children}) => {
     useEffect(() => {
         getUsers()
     }, [])
+
     useEffect(() => {
         if (error !== null) {
             toast.error(error)
@@ -33,6 +34,7 @@ const UserProvider = ({children}) => {
             errorCatcher(error)
         }
     }
+
     function getUser (id) {
         return users.find(user => user._id === id)
     }

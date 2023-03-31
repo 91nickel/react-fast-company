@@ -38,25 +38,26 @@ const App = () => {
             <NavBar {...{pages}}/>
             <div className="row">
                 <div className="col-12">
-                    <Switch>
-                        <ProfessionProvider>
-                            <QualityProvider>
+                    <ProfessionProvider>
+                        <QualityProvider>
+                            <Switch>
+
                                 {pages.filter(page => page.professions)
                                     .map((page, i) =>
                                         <Route
                                             key={`page_${i + 1}`} exact={page.exact}
                                             path={page.path + (page.params ? page.params : '')}
                                             component={page.component}/>)}
-                            </QualityProvider>
-                        </ProfessionProvider>
-                        {pages.filter(page => !page.professions)
-                            .map((page, i) =>
-                                <Route
-                                    key={`page_${i + 1}`} exact={page.exact}
-                                    path={page.path + (page.params ? page.params : '')}
-                                    component={page.component}/>)}
-                        <Redirect to="/404"/>
-                    </Switch>
+                                {pages.filter(page => !page.professions)
+                                    .map((page, i) =>
+                                        <Route
+                                            key={`page_${i + 1}`} exact={page.exact}
+                                            path={page.path + (page.params ? page.params : '')}
+                                            component={page.component}/>)}
+                                <Redirect to="/"/>
+                            </Switch>
+                        </QualityProvider>
+                    </ProfessionProvider>
                 </div>
             </div>
             <ToastContainer/>

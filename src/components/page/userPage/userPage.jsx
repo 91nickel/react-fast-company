@@ -14,7 +14,6 @@ const UserPage = ({id}) => {
     //     api.users.getById(id).then(data => setUser(data))
     // }, [])
 
-
     const loc = useLocation()
 
     if (!user)
