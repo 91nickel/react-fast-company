@@ -23,6 +23,7 @@
     <file url="file://$PROJECT_DIR$/src/components/ui/userEditForm.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/ui/usersTable.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/config.json" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/hooks/useAuth.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/layouts/home.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/layouts/login.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/utils/mockData.js" charset="UTF-8" />

@@ -2,14 +2,18 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import configFile from 'config.json'
 
-axios.defaults.baseURL = configFile.apiEndpoint
+const http = axios.create({
+    baseURL: configFile.apiEndpoint
+})
 
-axios.interceptors.request.use(
+http.defaults.baseURL = configFile.apiEndpoint
+
+http.interceptors.request.use(
     function (config) {
         if (configFile.isFirebase) {
             const isContainsSlash = /\/$/.test(config.url)
             config.url = (isContainsSlash ? config.url.slice(0, -1) : config.url) + '.json'
-            console.log(config.url)
+            // console.log(config.url)
         }
         return config
     },
@@ -22,20 +26,20 @@ function transformData (data) {
     return data ? Object.keys(data).map(key => ({...data[key]})) : []
 }
 
-axios.interceptors.response.use(
+http.interceptors.response.use(
     function (response) {
         if (configFile.isFirebase) {
-            console.log('beforeTransform', response.data)
+            // console.log('beforeTransform', response.data)
             response.data = {content: transformData(response.data)}
-            console.log('afterTransform', response.data)
+            // console.log('afterTransform', response.data)
         }
         return response
     },
     function (error) {
-        console.log('Interceptor', error)
+        // console.log('Interceptor', error)
         const expectedErrors = error.response && error.response.status >= 400 && error.response.status < 500
         if (!expectedErrors) {
-            console.log(error)
+            // console.log(error)
             toast.info('Something went wrong. Try later...')
             toast.error('Something went wrong. Try later...')
         }
@@ -43,10 +47,10 @@ axios.interceptors.response.use(
     })
 
 const httpService = {
-    get: axios.get,
-    post: axios.post,
-    put: axios.put,
-    delete: axios.delete,
+    get: http.get,
+    post: http.post,
+    put: http.put,
+    delete: http.delete,
 }
 
 export default httpService

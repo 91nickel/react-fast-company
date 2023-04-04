@@ -28,7 +28,7 @@ const SelectField = ({label, name, value, defaultValue, error, onChange, options
                 onChange={handleChange}
             >
                 <option disabled value="">{defaultValue}</option>
-                {arOptions.map((opt, i) => <option key={`op-${i}`} value={opt.value}>{opt.name}</option>)}
+                {arOptions.map((opt, i) => <option key={`op-${i}`} value={opt.value}>{opt.label}</option>)}
             </select>
             {error && <div className="invalid-feedback">{error}</div>}
         </div>

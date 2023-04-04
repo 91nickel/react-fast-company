@@ -5,7 +5,11 @@ const service = {
     get: async () => {
         const {data} = await httpService.get(endpoint)
         return data
-    }
+    },
+    create: async (payload) => {
+        const {data} = await httpService.put(endpoint + payload._id, payload)
+        return data
+    },
 }
 
 export default service

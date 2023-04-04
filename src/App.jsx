@@ -8,6 +8,7 @@ import Login from 'layouts/login'
 import NotFound from 'layouts/not-found'
 import NavBar from 'components/ui/navBar'
 import QualityProvider from './hooks/useQuality'
+import AuthProvider from './hooks/useAuth'
 
 const App = () => {
     const pages = [
@@ -35,31 +36,33 @@ const App = () => {
 
     return (
         <div className="container">
-            <NavBar {...{pages}}/>
-            <div className="row">
-                <div className="col-12">
-                    <ProfessionProvider>
-                        <QualityProvider>
-                            <Switch>
+            <AuthProvider>
+                <NavBar {...{pages}}/>
+                <div className="row">
+                    <div className="col-12">
+                        <ProfessionProvider>
+                            <QualityProvider>
+                                <Switch>
 
-                                {pages.filter(page => page.professions)
-                                    .map((page, i) =>
-                                        <Route
-                                            key={`page_${i + 1}`} exact={page.exact}
-                                            path={page.path + (page.params ? page.params : '')}
-                                            component={page.component}/>)}
-                                {pages.filter(page => !page.professions)
-                                    .map((page, i) =>
-                                        <Route
-                                            key={`page_${i + 1}`} exact={page.exact}
-                                            path={page.path + (page.params ? page.params : '')}
-                                            component={page.component}/>)}
-                                <Redirect to="/"/>
-                            </Switch>
-                        </QualityProvider>
-                    </ProfessionProvider>
+                                    {pages.filter(page => page.professions)
+                                        .map((page, i) =>
+                                            <Route
+                                                key={`page_${i + 1}`} exact={page.exact}
+                                                path={page.path + (page.params ? page.params : '')}
+                                                component={page.component}/>)}
+                                    {pages.filter(page => !page.professions)
+                                        .map((page, i) =>
+                                            <Route
+                                                key={`page_${i + 1}`} exact={page.exact}
+                                                path={page.path + (page.params ? page.params : '')}
+                                                component={page.component}/>)}
+                                    <Redirect to="/"/>
+                                </Switch>
+                            </QualityProvider>
+                        </ProfessionProvider>
+                    </div>
                 </div>
-            </div>
+            </AuthProvider>
             <ToastContainer/>
         </div>
     )

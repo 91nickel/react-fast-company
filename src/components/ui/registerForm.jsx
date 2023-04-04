@@ -7,8 +7,14 @@ import SelectField from '../common/form/selectField'
 import RadioField from '../common/form/radioField'
 import CheckboxField from '../common/form/checkboxField'
 import MultiSelectField from '../common/form/multiSelectField'
+import { useQuality } from '../../hooks/useQuality'
+import { useProfession } from '../../hooks/useProfession'
+import { useAuth } from '../../hooks/useAuth'
+import { useHistory } from 'react-router-dom'
+
 
 const RegisterForm = () => {
+    const history = useHistory();
     const [data, setData] = useState({
         email: '',
         password: '',
@@ -17,14 +23,20 @@ const RegisterForm = () => {
         qualities: [],
         license: false
     })
+    const {signUp} = useAuth()
     const [errors, setErrors] = useState({})
-    const [professions, setProfessions] = useState([])
-    const [qualities, setQualities] = useState({})
+    // const [professions, setProfessions] = useState([])
+    // const [qualities, setQualities] = useState({})
+    const {qualities} = useQuality()
+    const qualitiesList = qualities.map(q => ({label: q.name, value: q._id}))
 
-    useEffect(() => {
-        api.professions.fetchAll().then(data => setProfessions(data))
-        api.qualities.fetchAll().then(data => setQualities(data))
-    }, [])
+    const {professions} = useProfession()
+    const professionsList = professions.map(p => ({label: p.name, value: p._id}))
+
+    // useEffect(() => {
+    //     api.professions.fetchAll().then(data => setProfessions(data))
+    //     api.qualities.fetchAll().then(data => setQualities(data))
+    // }, [])
 
     useEffect(() => {
         validate()
@@ -79,16 +91,22 @@ const RegisterForm = () => {
         ))
     }
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
         const isValid = validate()
         if (!isValid) return
         const userFields = {
             ...data,
-            profession: professions.find(p => p._id === data.profession),
-            qualities: Object.values(qualities).filter(q => data.qualities.includes(q._id)),
+            profession: professions.find(p => p._id === data.profession)?._id,
+            qualities: Object.values(qualities).filter(q => data.qualities.includes(q._id)).map(q => q._id),
         }
-        console.log('userFields', userFields)
+        // console.log('userFields', userFields)
+        try {
+            await signUp(userFields)
+            history.push('/')
+        } catch (error) {
+            setErrors(error)
+        }
     }
 
     const validate = () => {
@@ -97,7 +115,6 @@ const RegisterForm = () => {
         return Object.keys(errors).length === 0
     }
     const isValid = Object.keys(errors).length === 0
-
     return (
         <form className="aa" onSubmit={handleSubmit}>
             <TextField
@@ -132,7 +149,7 @@ const RegisterForm = () => {
                 value={data.profession}
                 defaultValue="Choose your destiny..."
                 error={errors.profession}
-                options={professions.map(p => ({name: p.name, value: p._id}))}
+                options={professionsList}
                 onChange={handleChange}
             />
             <MultiSelectField
@@ -140,13 +157,14 @@ const RegisterForm = () => {
                 name="qualities"
                 value={data.qualities}
                 error={errors.qualities}
-                options={qualities}
+                options={qualitiesList}
                 onChange={handleChange}
             />
             <CheckboxField
                 label="Согласие с лицензионным соглашением"
                 name="license"
                 value={data.license}
+                required={true}
                 error={errors.license}
                 onChange={handleChange}
             >

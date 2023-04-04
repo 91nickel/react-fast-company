@@ -4,8 +4,12 @@ import TextField from 'components/common/form/textField'
 // import { validator } from 'utils/validator'
 import CheckboxField from '../common/form/checkboxField'
 import * as yup from 'yup'
+import { useAuth } from '../../hooks/useAuth'
+import { useHistory } from 'react-router-dom'
 
 const LoginForm = () => {
+    const history = useHistory();
+    const {signIn} = useAuth()
     const [data, setData] = useState({email: '', password: '', stayOn: false})
     const [errors, setErrors] = useState({})
 
@@ -52,17 +56,24 @@ const LoginForm = () => {
             .required('Пароль обязателен для заполнения')
             .matches(/^(?=.*[A-Z])/, 'Пароль должен содержать хотя бы одну заглавную букву')
             .matches(/^(?=.*[0-9])/, 'Пароль должен содержать хотя бы одну цифру')
-            .matches(/^(?=.*[!"№$%^&*])/, 'Пароль должен содержать хотя бы один спецсимвол')
+            .matches(/^(?=.*[!"№$%^&*\-_])/, 'Пароль должен содержать хотя бы один спецсимвол')
             .matches(/^(?=.{8,})/, 'Минимальная длина пароля - 8 символов'),
         email: yup.string().required('Электронная почта обязательна для заполнения').email('Электронная почта указана в неверном формате'),
     })
 
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
         const isValid = validate()
         if (!isValid) return
-        console.log(data)
+        // console.log(data)
+
+        try {
+            await signIn(data)
+            history.push('/')
+        } catch (error) {
+            setErrors(error)
+        }
     }
 
     const validate = () => {
