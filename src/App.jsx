@@ -9,6 +9,8 @@ import NotFound from 'layouts/not-found'
 import NavBar from 'components/ui/navBar'
 import QualityProvider from './hooks/useQuality'
 import AuthProvider from './hooks/useAuth'
+import ProtectedRoute from './components/common/protectedRoute'
+import Logout from './layouts/logout'
 
 const App = () => {
     const pages = [
@@ -18,7 +20,7 @@ const App = () => {
             path: '/login',
             params: '/:type?',
             exact: false,
-            nav: true,
+            nav: false,
             professions: true,
             component: (params) => <Login id={params.match.params.type}/>
         },
@@ -29,9 +31,11 @@ const App = () => {
             exact: false,
             nav: true,
             professions: true,
+            auth: true,
             component: (params) => <Users id={params.match.params.id} mode={params.match.params.type}/>
         },
         {name: 'Not Found', path: '/404', exact: false, nav: false, component: NotFound},
+        {name: 'Logout', path: '/logout', exact: false, nav: false, component: Logout},
     ]
 
     return (
@@ -45,11 +49,16 @@ const App = () => {
                                 <Switch>
 
                                     {pages.filter(page => page.professions)
-                                        .map((page, i) =>
-                                            <Route
-                                                key={`page_${i + 1}`} exact={page.exact}
-                                                path={page.path + (page.params ? page.params : '')}
-                                                component={page.component}/>)}
+                                        .map(
+                                            (page, i) => {
+                                                const RouteComponent = page.auth ? ProtectedRoute : Route
+                                                return <RouteComponent
+                                                    key={`page_${i + 1}`}
+                                                    exact={page.exact}
+                                                    path={page.path + (page.params ? page.params : '')}
+                                                    component={page.component}/>
+                                            }
+                                        )}
                                     {pages.filter(page => !page.professions)
                                         .map((page, i) =>
                                             <Route

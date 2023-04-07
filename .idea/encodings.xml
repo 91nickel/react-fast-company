@@ -15,6 +15,7 @@
     <file url="file://$PROJECT_DIR$/src/components/ui/comments/commentsList.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/ui/loginForm.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/ui/navBar.jsx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/components/ui/navProfile.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/ui/profession.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/ui/qualities/qualitiesList.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/components/ui/registerForm.jsx" charset="UTF-8" />
@@ -26,6 +27,7 @@
     <file url="file://$PROJECT_DIR$/src/hooks/useAuth.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/layouts/home.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/layouts/login.jsx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/layouts/logout.jsx" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/utils/mockData.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/utils/validator.js" charset="UTF-8" />
   </component>

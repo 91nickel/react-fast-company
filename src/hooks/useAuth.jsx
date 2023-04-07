@@ -2,19 +2,48 @@ import React, { useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import { setTokens } from 'services/localStorage.service'
+import localStorageService, { setTokens } from 'services/localStorage.service'
 import userService from 'services/user.service'
+import { useHistory } from 'react-router'
 
 const AuthContext = React.createContext()
-const httpAuth = axios.create()
+export const httpAuth = axios.create({
+    baseURL: 'https://identitytoolkit.googleapis.com/v1/',
+    params: {
+        key: process.env.REACT_APP_FIREBASE_KEY
+    }
+})
 
 export const useAuth = () => {
     return useContext(AuthContext)
 }
 
 const AuthProvider = ({children}) => {
+    const history = useHistory();
     const [user, setUser] = useState({})
     const [error, setError] = useState(null)
+    const [isLoading, setIsLoading] = useState(true)
+
+    const isAuthorized = Object.keys(user).length > 0
+
+    async function getUserData () {
+        try {
+            const {content} = await userService.getCurrentUser()
+            setUser(content)
+        } catch (error) {
+            errorCatcher(error)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        if (localStorageService.getAccessToken()) {
+            getUserData()
+        } else {
+            setIsLoading(false)
+        }
+    }, [])
 
     useEffect(() => {
         if (error !== null) {
@@ -28,13 +57,18 @@ const AuthProvider = ({children}) => {
         setError(message)
     }
 
+    function randomInt (min = 0, max = 100) {
+        return Math.floor(Math.random() * (max - min + 1) + min)
+    }
+
     async function signIn ({email, password, ...rest}) {
         // console.log('signIn', email, password)
-        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.REACT_APP_FIREBASE_KEY}`
+        const url = 'accounts:signInWithPassword'
         try {
-            const {data} = await httpAuth.post(url, {email, password, returnSecureKey: true})
-            // console.log(data)
+            const {data} = await httpAuth.post(url, {email, password, returnSecureToken: true})
+            console.log(data)
             setTokens(data)
+            await getUserData()
         } catch (error) {
             errorCatcher(error)
             const {code, message} = error.response.data.error
@@ -54,12 +88,19 @@ const AuthProvider = ({children}) => {
 
     async function signUp ({email, password, ...rest}) {
         // console.log('signUp', email, password)
-        const url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${process.env.REACT_APP_FIREBASE_KEY}`
+        const url = 'accounts:signUp'
         try {
-            const {data} = await httpAuth.post(url, {email, password, returnSecureKey: true})
+            const {data} = await httpAuth.post(url, {email, password, returnSecureToken: true})
             // console.log(data)
             setTokens(data)
-            await createUser({_id: data.localId, email, ...rest})
+            await createUser({
+                _id: data.localId,
+                email,
+                rate: randomInt(1, 5),
+                completedMeetings: randomInt(0, 200),
+                image: `https://avatars.dicebear.com/api/avataaars/${(Math.random() + 1).toString(36).substring(7)}.svg`,
+                ...rest
+            })
         } catch (error) {
             errorCatcher(error)
             const {code, message} = error.response.data.error
@@ -74,16 +115,26 @@ const AuthProvider = ({children}) => {
         }
     }
 
+    function logout () {
+        localStorageService.removeAuthData()
+        setUser({})
+        history.push('/')
+    }
+
     async function createUser (data) {
         try {
-            const {content} = userService.create(data)
+            const {content} = await userService.create(data)
             setUser(content)
         } catch (error) {
             errorCatcher(error)
         }
     }
 
-    return <AuthContext.Provider value={{signUp, signIn, user}}>{children}</AuthContext.Provider>
+    return (
+        <AuthContext.Provider value={{signUp, signIn, logout, user, isAuthorized}}>
+            {!isLoading ? children : 'Loading...'}
+        </AuthContext.Provider>
+    )
 }
 
 AuthProvider.propTypes = {

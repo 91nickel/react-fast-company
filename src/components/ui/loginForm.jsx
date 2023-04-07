@@ -56,7 +56,7 @@ const LoginForm = () => {
             .required('Пароль обязателен для заполнения')
             .matches(/^(?=.*[A-Z])/, 'Пароль должен содержать хотя бы одну заглавную букву')
             .matches(/^(?=.*[0-9])/, 'Пароль должен содержать хотя бы одну цифру')
-            .matches(/^(?=.*[!"№$%^&*\-_])/, 'Пароль должен содержать хотя бы один спецсимвол')
+            // .matches(/^(?=.*[!"№$%^&*\-_])/, 'Пароль должен содержать хотя бы один спецсимвол')
             .matches(/^(?=.{8,})/, 'Минимальная длина пароля - 8 символов'),
         email: yup.string().required('Электронная почта обязательна для заполнения').email('Электронная почта указана в неверном формате'),
     })
@@ -67,10 +67,11 @@ const LoginForm = () => {
         const isValid = validate()
         if (!isValid) return
         // console.log(data)
+        console.log('pathname', history.location?.state?.from?.pathname)
 
         try {
             await signIn(data)
-            history.push('/')
+            history.push(history.location?.state?.from?.pathname ? history.location.state.from.pathname : '/')
         } catch (error) {
             setErrors(error)
         }
