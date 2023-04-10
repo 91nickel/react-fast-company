@@ -18,7 +18,7 @@ function NavProfile () {
                 <div className="me-2">{user.name}</div>
                 <img
                     className="img-responsive rounded-circle"
-                    src={`https://avatars.dicebear.com/api/avataaars/${user.image}.svg`}
+                    src={user.image}
                     alt=""
                     height="40"
                 />

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import * as yup from 'yup'
@@ -6,31 +7,41 @@ import TextField from 'components/common/form/textField'
 import RadioField from 'components/common/form/radioField'
 import SelectField from 'components/common/form/selectField'
 import MultiSelectField from 'components/common/form/multiSelectField'
-import api from 'api'
+import { useProfession } from 'hooks/useProfession'
+import { useQuality } from '../../hooks/useQuality'
+import { useAuth } from '../../hooks/useAuth'
+import { useHistory } from 'react-router-dom'
 
-const UserEditForm = ({id}) => {
-    const [user, setUser] = useState()
+const UserEditForm = () => {
+    const history = useHistory()
+    const {id} = useParams()
     const [data, setData] = useState({})
     const [errors, setErrors] = useState({})
-    const [professions, setProfessions] = useState([])
-    const [qualities, setQualities] = useState({})
+    const {user, isLoading: userIsLoading, updateUser} = useAuth()
+    const {professions, isLoading: professionsIsLoading} = useProfession()
+    const {qualities, isLoading: qualitiesIsLoading} = useQuality()
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        api.users.getById(id).then(data => {
-            setUser(data)
-            setData({
-                ...data,
-                profession: data.profession._id,
-                qualities: data.qualities.map(q => (q._id))
-            })
-        })
-        api.professions.fetchAll().then(data => setProfessions(data))
-        api.qualities.fetchAll().then(data => setQualities(data))
-    }, [])
+        const isLoading = userIsLoading || professionsIsLoading || qualitiesIsLoading
+        setIsLoading(isLoading)
+        if (!isLoading) {
+            setData(createUserFields())
+        }
+    }, [user, professions, qualities])
 
     useEffect(() => {
         validate()
     }, [data])
+
+    function createUserFields (data = {}) {
+        return {
+            ...user,
+            ...data,
+            profession: (data.profession && Object.values(professions).find(p => data.profession && p._id === data.profession)) || (user.profession || ''),
+            qualities: (data.qualities && Object.values(qualities).filter(q => data.qualities.includes(q._id))) || (user.qualities || []),
+        }
+    }
 
     const handleChange = (target) => {
         setData(prevState => (
@@ -41,29 +52,22 @@ const UserEditForm = ({id}) => {
         ))
     }
 
-    const createUserFields = () => {
-        return {
-            ...user,
-            ...data,
-            profession: Object.values(professions).find(p => p._id === data.profession),
-            qualities: Object.values(qualities).filter(q => data.qualities.includes(q._id)),
-        }
-    }
-
     const handleSubmit = (event) => {
         event.preventDefault()
         if (!validate() || !hasDifference()) return false
-        api.users.update(id, createUserFields())
-        window.location = `/users/${id}`
-        console.log('handleSubmit()->userFields', createUserFields())
+        updateUser(data)
+        history.push(`/users/${id}`)
     }
 
 
     const validate = () => {
 
         const validateScheme = yup.object().shape({
-            email: yup.string().required('Электронная почта обязательна для заполнения').email('Электронная почта указана в неверном формате'),
-            name: yup.string().required('Имя должно быть указано'),
+            email: yup.string()
+                .required('Электронная почта обязательна для заполнения')
+                .email('Электронная почта указана в неверном формате'),
+            name: yup.string()
+                .required('Имя должно быть указано'),
         })
 
         validateScheme.validate(data)
@@ -74,12 +78,12 @@ const UserEditForm = ({id}) => {
     }
 
     const hasDifference = () => {
-        return !_.isEqual(user, createUserFields())
+        return !_.isEqual(user, data)
     }
 
     const isValid = Object.keys(errors).length === 0
 
-    if (!user || !Object.values(professions).length || !Object.values(qualities).length)
+    if (isLoading)
         return <h2>Загрузка ...</h2>
 
     return (
@@ -101,7 +105,7 @@ const UserEditForm = ({id}) => {
             <RadioField
                 label="Выберите ваш пол"
                 name="sex"
-                value={data.sex}
+                value={data.sex || 'male'}
                 error={errors.sex}
                 options={[
                     {name: 'Male', value: 'male'},
@@ -116,7 +120,7 @@ const UserEditForm = ({id}) => {
                 value={data.profession}
                 defaultValue="Choose your destiny..."
                 error={errors.profession}
-                options={Object.values(professions).map(p => ({name: p.name, value: p._id}))}
+                options={Object.values(professions).map(p => ({label: p.name, value: p._id}))}
                 onChange={handleChange}
             />
             <MultiSelectField
@@ -124,10 +128,15 @@ const UserEditForm = ({id}) => {
                 name="qualities"
                 value={data.qualities}
                 error={errors.qualities}
-                options={qualities}
+                options={qualities.map(q => ({label: q.name, value: q._id}))}
                 onChange={handleChange}
             />
-            <button className="btn btn-primary w-100 mx-auto" type="submit" disabled={!isValid || !hasDifference()}>Сохранить</button>
+            <button
+                className="btn btn-primary w-100 mx-auto"
+                type="submit"
+                disabled={!isValid || !hasDifference()}>
+                Сохранить
+            </button>
         </form>
     )
 }

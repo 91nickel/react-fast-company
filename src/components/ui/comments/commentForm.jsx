@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import api from 'api'
-import SelectField from '../../common/form/selectField'
+// import api from 'api'
+// import SelectField from '../../common/form/selectField'
 import * as yup from 'yup'
 import TextArea from '../../common/form/textArea'
 
 const CommentForm = ({onSubmit}) => {
-    const defaultData = {userId: '', content: ''};
-    const [users, setUsers] = useState([])
-    const [data, setData] = useState(defaultData)
+    // const [users, setUsers] = useState([])
+    const [data, setData] = useState({})
     const [errors, setErrors] = useState({})
 
-    useEffect(() => {
-        api.users.fetchAll().then(data => {
-            setUsers(data)
-        })
-    }, [])
+    // useEffect(() => {
+    //     api.users.fetchAll().then(data => {
+    //         setUsers(data)
+    //     })
+    // }, [])
     useEffect(() => {
         validate()
     }, [data])
@@ -27,7 +26,7 @@ const CommentForm = ({onSubmit}) => {
     const validate = () => {
         const validateScheme = yup.object().shape({
             content: yup.string().required('Заполните текст комментария'),
-            userId: yup.string().required('Выберите пользователя'),
+            // userId: yup.string().required('Выберите пользователя'),
         })
         validateScheme.validate(data)
             .then(() => setErrors({}))
@@ -39,26 +38,17 @@ const CommentForm = ({onSubmit}) => {
         event.preventDefault()
         if (!validate()) return false
         onSubmit(data)
-        setData({...defaultData})
+        setData({})
     }
 
     const isValid = Object.keys(errors).length === 0
 
     return (
         <form className="justify-content-end" onSubmit={handleSubmit}>
-            <SelectField
-                label="Выберите пользователя"
-                name="userId"
-                value={data.userId}
-                defaultValue="Choose user"
-                error={errors.userId}
-                options={Object.values(users).map(p => ({name: p.name, value: p._id}))}
-                onChange={handleChange}
-            />
             <TextArea
                 label="Сообщение"
                 name="content"
-                value={data.content}
+                value={data.content || ''}
                 rows={3}
                 error={errors.content}
                 onChange={handleChange}

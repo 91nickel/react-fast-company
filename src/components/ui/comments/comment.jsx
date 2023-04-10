@@ -1,21 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import api from 'api'
-import renderPhrase from '../../../utils/renderPhrase'
+import { useUser } from 'hooks/useUser'
+import renderPhrase from 'utils/renderPhrase'
+import { useAuth } from '../../../hooks/useAuth'
 
 const Comment = ({comment, onRemove}) => {
-    // console.log(comment)
-    const [user, setUser] = useState()
-    const [loading, setLoading] = useState(true)
-
-    useEffect(() => {
-        api.users.getById(comment.userId).then(data => {
-            setUser(data)
-            setLoading(false)
-        })
-    }, [])
-
-    if (loading) return null
+    // console.log('Comment', comment)
+    const {user} = useAuth()
+    const {getUser} = useUser()
+    const profile = getUser(comment.userId)
 
     const generateDate = (ts) => {
         const months = ['', 'Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
@@ -51,11 +44,7 @@ const Comment = ({comment, onRemove}) => {
                 <div className="col">
                     <div className="d-flex flex-start ">
                         <img
-                            src={`https://avatars.dicebear.com/api/avataaars/${(
-                                Math.random() + 1
-                            )
-                                .toString(36)
-                                .substring(7)}.svg`}
+                            src={profile.image}
                             className="rounded-circle shadow-1-strong me-3"
                             alt="avatar"
                             width="65"
@@ -65,17 +54,19 @@ const Comment = ({comment, onRemove}) => {
                             <div className="mb-4">
                                 <div className="d-flex justify-content-between align-items-center">
                                     <p className="mb-1 ">
-                                        {user.name}&nbsp;
+                                        {profile.name}&nbsp;
                                         <span className="small">
                                             {generateDate(+comment.created_at)}
 		                              </span>
                                     </p>
+                                    {comment.userId === user._id &&
                                     <button
                                         className="btn btn-sm text-primary d-flex align-items-center"
                                         onClick={() => onRemove(comment._id)}
                                     >
                                         <i className="bi bi-x-lg"/>
                                     </button>
+                                    }
                                 </div>
                                 <p className="small mb-0">{comment.content}</p>
                             </div>

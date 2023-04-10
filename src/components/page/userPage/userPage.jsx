@@ -1,23 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
-// import api from 'api'
 import QualitiesList from 'components/ui/qualities/qualitiesList'
 import CommentsList from 'components/ui/comments/commentsList'
-import { useUser } from 'hooks/useUsers'
-import { useAuth } from '../../../hooks/useAuth'
+import CommentProvider from 'hooks/useComment'
+import { useUser } from 'hooks/useUser'
+import { useAuth } from 'hooks/useAuth'
+import { useParams } from 'react-router'
 
-const UserPage = ({id}) => {
+const UserPage = () => {
     const loc = useLocation()
+    const {id} = useParams()
     const {getUser} = useUser()
     const {user} = useAuth()
-    const profile = getUser(id)
+    let profile = getUser(id)
     const isMyProfile = profile._id === user._id
-    // const [user, setUser] = useState()
-    // useEffect(() => {
-    //     api.users.getById(id).then(data => setUser(data))
-    // }, [])
-
 
     if (!profile)
         return <h2 className="mt-5">Загрузка ...</h2>
@@ -81,14 +78,16 @@ const UserPage = ({id}) => {
                 </div>
             </div>
             <div className="col-md-8">
-                <CommentsList id={id}/>
+                <CommentProvider>
+                    <CommentsList/>
+                </CommentProvider>
             </div>
         </div>
     )
 }
 
 UserPage.propTypes = {
-    id: PropTypes.string.isRequired,
+    // id: PropTypes.string.isRequired,
 }
 
 export default UserPage

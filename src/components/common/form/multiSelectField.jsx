@@ -45,7 +45,10 @@ MultiSelectField.propTypes = {
     value: PropTypes.array,
     error: PropTypes.string,
     onChange: PropTypes.func,
-    options: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.object), PropTypes.objectOf(PropTypes.object)]),
+    options: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.object),
+        PropTypes.objectOf(PropTypes.object)
+    ]),
 }
 
 export default MultiSelectField

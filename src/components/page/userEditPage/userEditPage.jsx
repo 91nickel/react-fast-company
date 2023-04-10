@@ -2,8 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import UserEditForm from '../../ui/userEditForm'
 import { Link, useLocation } from 'react-router-dom'
+import { useParams } from 'react-router'
+import { useUser } from '../../../hooks/useUser'
 
-const UserEditPage = ({id}) => {
+const UserEditPage = () => {
+    const {id} = useParams()
+
     return (<>
         <div className="col-12 mt-5">
             <Link to={`/users/${id}`} className="btn btn-primary">
@@ -14,7 +18,7 @@ const UserEditPage = ({id}) => {
         <div className="col-12 mt-5 d-flex justify-content-center">
             <div className="card w-50">
                 <div className="card-body">
-                    <UserEditForm id={id}/>
+                    <UserEditForm />
                 </div>
             </div>
         </div>

@@ -16,7 +16,7 @@ const UserProvider = ({children}) => {
 
     useEffect(() => {
         getUsers()
-    }, [])
+    }, [users])
 
     useEffect(() => {
         if (error !== null) {
