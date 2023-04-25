@@ -1,14 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
+
 import Bookmark from 'components/common/bookmark'
-import Qualities from 'components/ui/qualities'
+import QualitiesList from 'components/ui/qualities'
 import Table, { TableHeader, TableBody } from 'components/common/table'
 import Profession from './profession'
 
-const UsersTable = ({users, currentSort, onSort, /*onDelete,*/ onBookmark, ...rest}) => {
+const UsersTable = ({users, currentSort, onSort, onBookmark, ...rest}) => {
     const columns = {
-        // name: {path: 'name', name: 'Имя'},
         name: {
             name: 'Имя',
             component: user => {
@@ -18,11 +18,10 @@ const UsersTable = ({users, currentSort, onSort, /*onDelete,*/ onBookmark, ...re
         qualities: {
             name: 'Качества',
             component: (user) => {
-                return <Qualities qualities={user.qualities}/>
+                return <QualitiesList ids={user.qualities}/>
             }
         },
         profession: {
-            // path: 'profession.name',
             name: 'Профессия',
             component: (user) => <Profession id={user.profession}/>,
         },
@@ -39,15 +38,6 @@ const UsersTable = ({users, currentSort, onSort, /*onDelete,*/ onBookmark, ...re
                 />)
             }
         },
-        // delete: {
-        //     component: user => {
-        //         return (
-        //             <button type="button" className="btn btn-danger btn-sm" onClick={() => onDelete(user._id)}>
-        //                 delete
-        //             </button>
-        //         )
-        //     },
-        // },
     }
     return (
         <Table onSort={onSort} currentSort={currentSort} columns={columns} data={users}>

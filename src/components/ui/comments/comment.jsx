@@ -1,14 +1,15 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
-import { useUser } from 'hooks/useUser'
+import { useAuth } from 'hooks/useAuth'
+import { getUser } from 'store/user'
 import renderPhrase from 'utils/renderPhrase'
-import { useAuth } from '../../../hooks/useAuth'
 
 const Comment = ({comment, onRemove}) => {
     // console.log('Comment', comment)
     const {user} = useAuth()
-    const {getUser} = useUser()
-    const profile = getUser(comment.userId)
+
+    const profile = useSelector(getUser(comment.userId))
 
     const generateDate = (ts) => {
         const months = ['', 'Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']

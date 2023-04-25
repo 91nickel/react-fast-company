@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
+import { useHistory } from 'react-router-dom'
+
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import * as yup from 'yup'
+
 import TextField from 'components/common/form/textField'
 import RadioField from 'components/common/form/radioField'
 import SelectField from 'components/common/form/selectField'
 import MultiSelectField from 'components/common/form/multiSelectField'
-import { useProfession } from 'hooks/useProfession'
-import { useQuality } from '../../hooks/useQuality'
-import { useAuth } from '../../hooks/useAuth'
-import { useHistory } from 'react-router-dom'
+
+import { useAuth } from 'hooks/useAuth'
+import { useSelector } from 'react-redux'
+
+import { getQualities, getQualitiesIsLoading } from 'store/quality'
+import { getProfessions, getProfessionsIsLoading } from 'store/profession'
 
 const UserEditForm = () => {
     const history = useHistory()
@@ -18,8 +23,13 @@ const UserEditForm = () => {
     const [data, setData] = useState({})
     const [errors, setErrors] = useState({})
     const {user, isLoading: userIsLoading, updateUser} = useAuth()
-    const {professions, isLoading: professionsIsLoading} = useProfession()
-    const {qualities, isLoading: qualitiesIsLoading} = useQuality()
+
+    const professions = useSelector(getProfessions())
+    const professionsIsLoading = useSelector(getProfessionsIsLoading())
+
+    const qualities = useSelector(getQualities())
+    const qualitiesIsLoading = useSelector(getQualitiesIsLoading())
+
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
@@ -142,7 +152,7 @@ const UserEditForm = () => {
 }
 
 UserEditForm.propTypes = {
-    id: PropTypes.string.isRequired,
+
 }
 
 export default UserEditForm

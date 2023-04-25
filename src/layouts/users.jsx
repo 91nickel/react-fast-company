@@ -1,29 +1,39 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+
 import UsersListPage from 'components/page/usersListPage'
 import UserPage from 'components/page/userPage'
 import UserEditPage from 'components/page/userEditPage'
-import { useParams } from 'react-router-dom'
-import UserProvider from '../hooks/useUser'
+
+import { getUsersIsLoading, loadUsersList } from 'store/user'
 
 const Users = () => {
-    const params = useParams()
-    const {id, type} = params
+    const dispatch = useDispatch()
+    const {id, type} = useParams()
+
+    useEffect(() => {
+        dispatch(loadUsersList())
+    }, [])
+
+    const isLoading = useSelector(getUsersIsLoading())
+
+    const getComponent = () => {
+        if (isLoading) {
+            return <h2>Loading ...</h2>
+        } else if (id) {
+            return type === 'edit'
+                ? <UserEditPage id={id}/>
+                : <UserPage id={id}/>
+        } else {
+            return <UsersListPage/>
+        }
+    }
 
     return (
         <div className="row">
             <div className="col-12">
-                <UserProvider>
-                    {id
-                        ? (
-                            type === 'edit'
-                                ? <UserEditPage id={id}/>
-                                : <UserPage id={id}/>
-                        )
-                        : (
-                            <UsersListPage/>
-                        )
-                    }
-                </UserProvider>
+                {getComponent()}
             </div>
         </div>
     )

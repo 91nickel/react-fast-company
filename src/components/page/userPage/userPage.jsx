@@ -1,19 +1,22 @@
 import React, { useEffect } from 'react'
+import { useParams } from 'react-router'
 import { Link, useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+
 import PropTypes from 'prop-types'
 import QualitiesList from 'components/ui/qualities/qualitiesList'
 import CommentsList from 'components/ui/comments/commentsList'
 import CommentProvider from 'hooks/useComment'
-import { useUser } from 'hooks/useUser'
 import { useAuth } from 'hooks/useAuth'
-import { useParams } from 'react-router'
+import { getUser } from 'store/user'
 
 const UserPage = () => {
     const loc = useLocation()
     const {id} = useParams()
-    const {getUser} = useUser()
     const {user} = useAuth()
-    let profile = getUser(id)
+
+    const profile = useSelector(getUser(id))
+
     const isMyProfile = profile._id === user._id
 
     if (!profile)
@@ -57,7 +60,7 @@ const UserPage = () => {
                             <span>Qualities</span>
                         </h5>
                         <p className="card-text">
-                            <QualitiesList qualities={profile.qualities}/>
+                            <QualitiesList ids={profile.qualities}/>
                         </p>
                     </div>
                 </div>

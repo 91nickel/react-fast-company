@@ -1,20 +1,22 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react'
-import TextField from 'components/common/form/textField'
-import { validator } from 'utils/validator'
-import api from 'api'
-import SelectField from '../common/form/selectField'
-import RadioField from '../common/form/radioField'
-import CheckboxField from '../common/form/checkboxField'
-import MultiSelectField from '../common/form/multiSelectField'
-import { useQuality } from '../../hooks/useQuality'
-import { useProfession } from '../../hooks/useProfession'
-import { useAuth } from '../../hooks/useAuth'
 import { useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
+import TextField from 'components/common/form/textField'
+import SelectField from 'components/common/form/selectField'
+import RadioField from 'components/common/form/radioField'
+import CheckboxField from 'components/common/form/checkboxField'
+import MultiSelectField from 'components/common/form/multiSelectField'
+
+import { useAuth } from 'hooks/useAuth'
+
+import { validator } from 'utils/validator'
+
+import { getQualities } from 'store/quality'
+import { getProfessions } from 'store/profession'
 
 const RegisterForm = () => {
-    const history = useHistory();
+    const history = useHistory()
     const [data, setData] = useState({
         email: '',
         name: '',
@@ -26,18 +28,12 @@ const RegisterForm = () => {
     })
     const {signUp} = useAuth()
     const [errors, setErrors] = useState({})
-    // const [professions, setProfessions] = useState([])
-    // const [qualities, setQualities] = useState({})
-    const {qualities} = useQuality()
+
+    const qualities = useSelector(getQualities())
+    const professions = useSelector(getProfessions())
+
     const qualitiesList = qualities.map(q => ({label: q.name, value: q._id}))
-
-    const {professions} = useProfession()
     const professionsList = professions.map(p => ({label: p.name, value: p._id}))
-
-    // useEffect(() => {
-    //     api.professions.fetchAll().then(data => setProfessions(data))
-    //     api.qualities.fetchAll().then(data => setQualities(data))
-    // }, [])
 
     useEffect(() => {
         validate()
@@ -94,7 +90,8 @@ const RegisterForm = () => {
     }
 
     const handleChange = (target) => {
-        setData(prevState => ({
+        setData(prevState => (
+            {
                 ...prevState,
                 [target.name]: target.value,
             }

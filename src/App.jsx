@@ -1,18 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import ProfessionProvider from './hooks/useProfession'
 import Users from 'layouts/users'
 import Home from 'layouts/home'
 import Login from 'layouts/login'
 import NotFound from 'layouts/not-found'
 import NavBar from 'components/ui/navBar'
-import QualityProvider from './hooks/useQuality'
-import AuthProvider from './hooks/useAuth'
-import ProtectedRoute from './components/common/protectedRoute'
-import Logout from './layouts/logout'
+import AuthProvider from 'hooks/useAuth'
+import ProtectedRoute from 'components/common/protectedRoute'
+import Logout from 'layouts/logout'
+import { useDispatch } from 'react-redux'
+import { loadQualitiesList } from 'store/quality'
+import { loadProfessionsList } from './store/profession'
 
 const App = () => {
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(loadQualitiesList())
+        dispatch(loadProfessionsList())
+    }, [])
+
     const pages = [
         {name: 'Home', path: '/', exact: true, nav: true, component: Home},
         {
@@ -44,31 +53,28 @@ const App = () => {
                 <NavBar {...{pages}}/>
                 <div className="row">
                     <div className="col-12">
-                        <ProfessionProvider>
-                            <QualityProvider>
-                                <Switch>
-
-                                    {pages.filter(page => page.professions)
-                                        .map(
-                                            (page, i) => {
-                                                const RouteComponent = page.auth ? ProtectedRoute : Route
-                                                return <RouteComponent
-                                                    key={`page_${i + 1}`}
-                                                    exact={page.exact}
-                                                    path={page.path + (page.params ? page.params : '')}
-                                                    component={page.component}/>
-                                            }
-                                        )}
-                                    {pages.filter(page => !page.professions)
-                                        .map((page, i) =>
-                                            <Route
-                                                key={`page_${i + 1}`} exact={page.exact}
-                                                path={page.path + (page.params ? page.params : '')}
-                                                component={page.component}/>)}
-                                    <Redirect to="/"/>
-                                </Switch>
-                            </QualityProvider>
-                        </ProfessionProvider>
+                        <Switch>
+                            {pages
+                                .filter(page => page.professions)
+                                .map(
+                                    (page, i) => {
+                                        const RouteComponent = page.auth ? ProtectedRoute : Route
+                                        return <RouteComponent
+                                            key={`page_${i + 1}`}
+                                            exact={page.exact}
+                                            path={page.path + (page.params ? page.params : '')}
+                                            component={page.component}/>
+                                    }
+                                )}
+                            {pages
+                                .filter(page => !page.professions)
+                                .map((page, i) =>
+                                    <Route
+                                        key={`page_${i + 1}`} exact={page.exact}
+                                        path={page.path + (page.params ? page.params : '')}
+                                        component={page.component}/>)}
+                            <Redirect to="/"/>
+                        </Switch>
                     </div>
                 </div>
             </AuthProvider>

@@ -19,6 +19,7 @@ export const useAuth = () => {
 }
 
 const AuthProvider = ({children}) => {
+
     const history = useHistory();
     const [user, setUser] = useState({})
     const [error, setError] = useState(null)
