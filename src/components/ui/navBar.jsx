@@ -1,12 +1,14 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
-import { useAuth } from '../../hooks/useAuth'
+
 import NavProfile from './navProfile'
+import { getUsersIsAuthorized } from 'store/user'
 
 function NavBar ({pages}) {
     const location = useLocation()
-    const {isAuthorized} = useAuth()
+    const isAuthorized = useSelector(getUsersIsAuthorized())
 
     return (
         <div className="row">

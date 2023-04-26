@@ -4,23 +4,13 @@ import { ToastContainer } from 'react-toastify'
 import Users from 'layouts/users'
 import Home from 'layouts/home'
 import Login from 'layouts/login'
+import Logout from 'layouts/logout'
 import NotFound from 'layouts/not-found'
 import NavBar from 'components/ui/navBar'
-import AuthProvider from 'hooks/useAuth'
 import ProtectedRoute from 'components/common/protectedRoute'
-import Logout from 'layouts/logout'
-import { useDispatch } from 'react-redux'
-import { loadQualitiesList } from 'store/quality'
-import { loadProfessionsList } from './store/profession'
+import AppLoader from './components/ui/hoc/appLoader'
 
 const App = () => {
-
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(loadQualitiesList())
-        dispatch(loadProfessionsList())
-    }, [])
 
     const pages = [
         {name: 'Home', path: '/', exact: true, nav: true, component: Home},
@@ -49,7 +39,7 @@ const App = () => {
 
     return (
         <div className="container">
-            <AuthProvider>
+            <AppLoader>
                 <NavBar {...{pages}}/>
                 <div className="row">
                     <div className="col-12">
@@ -58,7 +48,9 @@ const App = () => {
                                 .filter(page => page.professions)
                                 .map(
                                     (page, i) => {
-                                        const RouteComponent = page.auth ? ProtectedRoute : Route
+                                        const RouteComponent = page.auth
+                                            ? ProtectedRoute
+                                            : Route
                                         return <RouteComponent
                                             key={`page_${i + 1}`}
                                             exact={page.exact}
@@ -77,7 +69,7 @@ const App = () => {
                         </Switch>
                     </div>
                 </div>
-            </AuthProvider>
+            </AppLoader>
             <ToastContainer/>
         </div>
     )

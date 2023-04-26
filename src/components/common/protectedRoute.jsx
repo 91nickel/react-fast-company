@@ -1,12 +1,17 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { useAuth } from 'hooks/useAuth'
 import { Route, Redirect } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
+import { getUsersIsAuthorized, getUsersIsProcessingAuth } from 'store/user'
 
 const ProtectedRoute = ({component: Component, children, ...rest}) => {
-    const {user, isAuthorized} = useAuth()
+
+    const isProcessingAuth = useSelector(getUsersIsProcessingAuth())
+    const isAuthorized = useSelector(getUsersIsAuthorized())
 
     const render = (props) => {
+        if (isProcessingAuth)
+            return 'Auth processing...'
         if (!isAuthorized) {
             return <Redirect to={{pathname: '/login', state: {from: props.location}}}/>
         }
@@ -14,7 +19,6 @@ const ProtectedRoute = ({component: Component, children, ...rest}) => {
     }
 
     return <Route {...rest} render={render}/>
-
 }
 
 ProtectedRoute.propTypes = {

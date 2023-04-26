@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react'
-import { useAuth } from '../hooks/useAuth'
-// import { Redirect } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { logOut } from 'store/user'
 
 const Logout = () => {
-    const {logout} = useAuth()
-    useEffect(logout, [])
-    return <h1>Loading...</h1>
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(logOut())
+    }, [])
+    return ''
 }
 
 export default Logout

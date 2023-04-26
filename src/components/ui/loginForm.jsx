@@ -1,15 +1,15 @@
-/* eslint-disable */
 import React, { useEffect, useState } from 'react'
-import TextField from 'components/common/form/textField'
-// import { validator } from 'utils/validator'
-import CheckboxField from '../common/form/checkboxField'
-import * as yup from 'yup'
-import { useAuth } from '../../hooks/useAuth'
 import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import * as yup from 'yup'
+
+import TextField from 'components/common/form/textField'
+import CheckboxField from 'components/common/form/checkboxField'
+import { signIn } from 'store/user'
 
 const LoginForm = () => {
-    const history = useHistory();
-    const {signIn} = useAuth()
+    const history = useHistory()
+    const dispatch = useDispatch()
     const [data, setData] = useState({email: '', password: '', stayOn: false})
     const [errors, setErrors] = useState({})
 
@@ -18,7 +18,8 @@ const LoginForm = () => {
     }, [data])
 
     const handleChange = (target) => {
-        setData(prevState => ({
+        setData(prevState => (
+            {
                 ...prevState,
                 [target.name]: target.value,
             }
@@ -62,19 +63,14 @@ const LoginForm = () => {
     })
 
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault()
         const isValid = validate()
         if (!isValid) return
-        // console.log(data)
-        console.log('pathname', history.location?.state?.from?.pathname)
-
-        try {
-            await signIn(data)
-            history.push(history.location?.state?.from?.pathname ? history.location.state.from.pathname : '/')
-        } catch (error) {
-            setErrors(error)
-        }
+        const redirect = history.location?.state?.from?.pathname
+            ? history.location.state.from.pathname
+            : '/'
+        dispatch(signIn({payload: data, redirect}))
     }
 
     const validate = () => {
@@ -90,10 +86,20 @@ const LoginForm = () => {
 
     return (
         <form className="aa" onSubmit={handleSubmit}>
-            <TextField label="Электронная почта" type="text" name="email" value={data.email} error={errors.email}
-                       onChange={handleChange}/>
-            <TextField label="Пароль" type="password" name="password" value={data.password} error={errors.password}
-                       onChange={handleChange}/>
+            <TextField
+                label="Электронная почта"
+                type="text"
+                name="email"
+                value={data.email}
+                error={errors.email}
+                onChange={handleChange}/>
+            <TextField
+                label="Пароль"
+                type="password"
+                name="password"
+                value={data.password}
+                error={errors.password}
+                onChange={handleChange}/>
             <CheckboxField
                 label=""
                 name="stayOn"

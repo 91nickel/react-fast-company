@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useParams } from 'react-router'
 import { Link, useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -7,14 +7,13 @@ import PropTypes from 'prop-types'
 import QualitiesList from 'components/ui/qualities/qualitiesList'
 import CommentsList from 'components/ui/comments/commentsList'
 import CommentProvider from 'hooks/useComment'
-import { useAuth } from 'hooks/useAuth'
-import { getUser } from 'store/user'
+import { getCurrentUser, getUser } from 'store/user'
 
 const UserPage = () => {
     const loc = useLocation()
     const {id} = useParams()
-    const {user} = useAuth()
 
+    const user = useSelector(getCurrentUser())
     const profile = useSelector(getUser(id))
 
     const isMyProfile = profile._id === user._id

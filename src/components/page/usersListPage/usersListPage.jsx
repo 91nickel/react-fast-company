@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import _ from 'lodash'
 import Pagination from 'components/common/pagination'
 import GroupList from 'components/common/groupList'
 import UsersTable from 'components/ui/usersTable'
 import SearchStatus from 'components/ui/searchStatus'
 import SearchString from 'components/ui/searchString'
-import { useAuth } from 'hooks/useAuth'
 import paginate from 'utils/paginate'
 
-import { getUsers, getUsersIsLoading, loadUsersList } from 'store/user'
+import { getCurrentUser, getUsers, getUsersIsLoading } from 'store/user'
 import { getProfessions, getProfessionsIsLoading } from 'store/profession'
 
 const UsersListPage = () => {
 
-    const dispatch = useDispatch()
-
     const pageSize = 4
-    const {user} = useAuth()
+    const user = useSelector(getCurrentUser())
 
     const [currentProfession, setCurrentProfession] = useState()
     const [currentPage, setCurrentPage] = useState(1)
@@ -37,7 +34,7 @@ const UsersListPage = () => {
     if (usersIsLoading || professionsIsLoading) {
         return (
             <div className="row mt-3">
-                <div className="col-12"><h2>Загрузка ...</h2></div>
+                <div className="col-12"><h2>Users list page loading ...</h2></div>
             </div>
         )
     }

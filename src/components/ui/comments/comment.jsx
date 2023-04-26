@@ -1,14 +1,12 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
-import { useAuth } from 'hooks/useAuth'
-import { getUser } from 'store/user'
+import { getCurrentUser, getUser } from 'store/user'
 import renderPhrase from 'utils/renderPhrase'
 
 const Comment = ({comment, onRemove}) => {
-    // console.log('Comment', comment)
-    const {user} = useAuth()
 
+    const user = useSelector(getCurrentUser())
     const profile = useSelector(getUser(comment.userId))
 
     const generateDate = (ts) => {

@@ -11,18 +11,21 @@ import RadioField from 'components/common/form/radioField'
 import SelectField from 'components/common/form/selectField'
 import MultiSelectField from 'components/common/form/multiSelectField'
 
-import { useAuth } from 'hooks/useAuth'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { getQualities, getQualitiesIsLoading } from 'store/quality'
 import { getProfessions, getProfessionsIsLoading } from 'store/profession'
+import { getCurrentUser, getUsersIsLoading, updateUser } from 'store/user'
 
 const UserEditForm = () => {
+    const dispatch = useDispatch()
     const history = useHistory()
     const {id} = useParams()
     const [data, setData] = useState({})
     const [errors, setErrors] = useState({})
-    const {user, isLoading: userIsLoading, updateUser} = useAuth()
+
+    const user = useSelector(getCurrentUser())
+    const userIsLoading = useSelector(getUsersIsLoading())
 
     const professions = useSelector(getProfessions())
     const professionsIsLoading = useSelector(getProfessionsIsLoading())
@@ -65,7 +68,7 @@ const UserEditForm = () => {
     const handleSubmit = (event) => {
         event.preventDefault()
         if (!validate() || !hasDifference()) return false
-        updateUser(data)
+        dispatch(updateUser(data))
         history.push(`/users/${id}`)
     }
 

@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { useHistory } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify'
 import PropTypes from 'prop-types'
 import axios from 'axios'
-import { toast } from 'react-toastify'
-import localStorageService, { setTokens } from 'services/localStorage.service'
 import userService from 'services/user.service'
-import { useHistory } from 'react-router'
+import localStorageService, { setTokens } from 'services/localStorage.service'
+import { getUsersIsAuthorized, getUsersIsProcessingAuth, getCurrentUser, setAuth } from 'store/user'
 
 const AuthContext = React.createContext()
 export const httpAuth = axios.create({
@@ -20,30 +22,15 @@ export const useAuth = () => {
 
 const AuthProvider = ({children}) => {
 
-    const history = useHistory();
-    const [user, setUser] = useState({})
+    const dispatch = useDispatch()
+    const history = useHistory()
     const [error, setError] = useState(null)
-    const [isLoading, setIsLoading] = useState(true)
-
-    const isAuthorized = Object.keys(user).length > 0
-
-    async function getUserData () {
-        try {
-            const {content} = await userService.getCurrentUser()
-            setUser(content)
-        } catch (error) {
-            errorCatcher(error)
-        } finally {
-            setIsLoading(false)
-        }
-    }
+    const isLoading = useSelector(getUsersIsProcessingAuth())
+    const isAuthorized = useSelector(getUsersIsAuthorized())
+    const user = useSelector(getCurrentUser())
 
     useEffect(() => {
-        if (localStorageService.getAccessToken()) {
-            getUserData()
-        } else {
-            setIsLoading(false)
-        }
+        // dispatch(setAuth())
     }, [])
 
     useEffect(() => {
@@ -118,7 +105,7 @@ const AuthProvider = ({children}) => {
 
     function logout () {
         localStorageService.removeAuthData()
-        setUser({})
+        // setUser({})
         history.push('/')
     }
 
@@ -141,8 +128,8 @@ const AuthProvider = ({children}) => {
     }
 
     return (
-        <AuthContext.Provider value={{signUp, signIn, logout, user, updateUser, isAuthorized}}>
-            {!isLoading ? children : 'Loading...'}
+        <AuthContext.Provider value={{signUp, signIn, logout, updateUser, user, isAuthorized, isLoading}}>
+            {isLoading ? 'Auth provider Loading...' : children}
         </AuthContext.Provider>
     )
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import TextField from 'components/common/form/textField'
 import SelectField from 'components/common/form/selectField'
@@ -8,15 +7,14 @@ import RadioField from 'components/common/form/radioField'
 import CheckboxField from 'components/common/form/checkboxField'
 import MultiSelectField from 'components/common/form/multiSelectField'
 
-import { useAuth } from 'hooks/useAuth'
-
 import { validator } from 'utils/validator'
 
 import { getQualities } from 'store/quality'
 import { getProfessions } from 'store/profession'
+import { signUp } from 'store/user'
 
 const RegisterForm = () => {
-    const history = useHistory()
+    const dispatch = useDispatch()
     const [data, setData] = useState({
         email: '',
         name: '',
@@ -26,7 +24,6 @@ const RegisterForm = () => {
         qualities: [],
         license: false
     })
-    const {signUp} = useAuth()
     const [errors, setErrors] = useState({})
 
     const qualities = useSelector(getQualities())
@@ -107,13 +104,7 @@ const RegisterForm = () => {
             profession: professions.find(p => p._id === data.profession)?._id,
             qualities: Object.values(qualities).filter(q => data.qualities.includes(q._id)).map(q => q._id),
         }
-        // console.log('userFields', userFields)
-        try {
-            await signUp(userFields)
-            history.push('/')
-        } catch (error) {
-            setErrors(error)
-        }
+        dispatch(signUp(userFields))
     }
 
     const validate = () => {

@@ -3,8 +3,9 @@ import { useParams } from 'react-router'
 import PropTypes from 'prop-types'
 import service from 'services/comment.service'
 import { toast } from 'react-toastify'
-import { useAuth } from './useAuth'
 import { nanoid } from 'nanoid'
+import { useSelector } from 'react-redux'
+import { getCurrentUser } from '../store/user'
 
 const CommentsContext = React.createContext()
 
@@ -14,7 +15,7 @@ export const useComment = () => {
 
 const CommentProvider = ({children}) => {
     const {id: pageId} = useParams()
-    const {user} = useAuth()
+    const user = useSelector(getCurrentUser())
     const [comments, setComments] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState(null)
