@@ -1,34 +1,43 @@
 import React, { useEffect } from 'react'
+import { useParams } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
 // import PropTypes from 'prop-types'
 // import _ from 'lodash'
 import Comment from './comment'
-// import api from 'api'
 import CommentForm from './commentForm'
-import { useParams } from 'react-router'
-import { useComment } from '../../../hooks/useComment'
+import { getComments, getCommentsIsLoading, loadCommentsList, createComment, removeComment } from 'store/comment'
+import { nanoid } from 'nanoid'
+import { getCurrentUser } from 'store/user'
 
 const CommentsList = () => {
+    const dispatch = useDispatch()
     const {id: pageId} = useParams()
-    const {createComment, removeComment, comments, isLoading} = useComment()
 
-    const updateComments = () => {
-        // setIsLoading(true)
-        // return api.comments.fetchCommentsForUser(id).then(data => {
-        //     const sorted = _.orderBy(data, 'created_at', 'asc')
-        //     setComments(sorted)
-        //     setIsLoading(false)
-        // })
-    }
+    const user = useSelector(getCurrentUser())
+    const comments = useSelector(getComments())
+    const isLoading = useSelector(getCommentsIsLoading())
 
     useEffect(() => {
-        updateComments()
-    }, [])
+        dispatch(loadCommentsList(pageId))
+    }, [pageId])
 
-    const onSubmit = async comment => createComment(comment)
+    const onSubmit = (comment) => {
+        dispatch(
+            createComment(
+                {
+                    _id: nanoid(),
+                    pageId: pageId,
+                    userId: user._id,
+                    created_at: Date.now(),
+                    ...comment,
+                }
+            )
+        )
+    }
 
-    const onRemove = async commentId => removeComment(commentId)
+    const onRemove = commentId => dispatch(removeComment(commentId))
 
-    const hasComments = Object.values(comments).length > 0
+    const hasComments = comments && Object.values(comments).length > 0
 
     return (
         <>
@@ -46,10 +55,10 @@ const CommentsList = () => {
                     <h2>Comments</h2>
                     <hr/>
                     {
-                        isLoading
-                            ? <p>Loading...</p>
-                            : Object.values(comments).map(comment =>
+                        !isLoading
+                            ? Object.values(comments).map(comment =>
                                 <Comment key={comment._id} comment={comment} onRemove={onRemove}/>)
+                            : <p>Loading...</p>
                     }
                 </div>
             </div>

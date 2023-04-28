@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as yup from 'yup'
 
 import TextField from 'components/common/form/textField'
 import CheckboxField from 'components/common/form/checkboxField'
-import { signIn } from 'store/user'
+import { getAuthErrors, signIn } from 'store/user'
 
 const LoginForm = () => {
     const history = useHistory()
     const dispatch = useDispatch()
     const [data, setData] = useState({email: '', password: '', stayOn: false})
+    const globalError = useSelector(getAuthErrors())
     const [errors, setErrors] = useState({})
 
     useEffect(() => {
@@ -109,7 +110,7 @@ const LoginForm = () => {
             >
                 Запомнить меня
             </CheckboxField>
-
+            {globalError && <p className="text-danger">{globalError}</p>}
             <button className="btn btn-primary w-100 mx-auto" type="submit" disabled={!isValid}>Отправить</button>
         </form>
     )

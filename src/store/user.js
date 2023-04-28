@@ -4,6 +4,7 @@ import authService from 'services/auth.service'
 import localStorageService from 'services/localStorage.service'
 import randomInt from 'utils/randomInt'
 import history from 'utils/history'
+import generateAuthError from '../utils/generateAuthError'
 
 const slice = createSlice({
     name: 'user',
@@ -42,6 +43,7 @@ const slice = createSlice({
         },
         authRequested: (state) => {
             state.isProcessingAuth = true
+            state.error = null
         },
         authRequestSuccess: (state, action) => {
             state.auth = action.payload
@@ -103,7 +105,13 @@ export const signIn = ({payload, redirect}) => async dispatch => {
         localStorageService.setTokens(data)
         history.push(redirect)
     } catch (error) {
-        dispatch(authRequestFailed(error.message))
+        const {code, message} = error.response.data.error
+        if (code === 400) {
+            const errorMessage = generateAuthError(message)
+            dispatch(authRequestFailed(generateAuthError(errorMessage)))
+        } else {
+            dispatch(authRequestFailed(message))
+        }
     }
 }
 
@@ -178,5 +186,5 @@ export const getUsersIsLoading = () => state => state.user.isLoading
 export const getUsersIsAuthorized = () => state => state.user.isAuthorized
 export const getUsersIsDataLoaded = () => state => state.user.isDataLoaded
 export const getUsersIsProcessingAuth = () => state => state.user.isProcessingAuth
-
+export const getAuthErrors = () => state => state.user.error
 export default reducer
