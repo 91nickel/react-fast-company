@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import QualitiesList from 'components/ui/qualities/qualitiesList'
 import CommentsList from 'components/ui/comments/commentsList'
-import CommentProvider from 'hooks/useComment'
 import { getCurrentUser, getUser } from 'store/user'
 
 const UserPage = () => {
@@ -80,9 +79,7 @@ const UserPage = () => {
                 </div>
             </div>
             <div className="col-md-8">
-                <CommentProvider>
-                    <CommentsList/>
-                </CommentProvider>
+                <CommentsList/>
             </div>
         </div>
     )
