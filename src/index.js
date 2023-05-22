@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { Router } from 'react-router-dom'
+import { Router, BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
@@ -14,13 +14,13 @@ import 'react-toastify/dist/ReactToastify.css'
 const store = createStore()
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
-    <Router history={history}>
+    <BrowserRouter history={history}>
         <React.StrictMode>
             <Provider store={store}>
                 <App/>
             </Provider>
         </React.StrictMode>
-    </Router>
+    </BrowserRouter>
 )
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
