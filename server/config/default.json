@@ -1,3 +1,4 @@
 {
-  "port": 8080
+  "port": 8080,
+  "mongDbConnectionString": "mongodb+srv://91nickel:I5fDwHQyxCynARKD@cluster0.ady9s06.mongodb.net/app?retryWrites=true&w=majority"
 }

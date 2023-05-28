@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="00967970-04d8-4ea6-af56-5ab878925bc1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/server/helpers/helpers.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/mock/proffession.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/mock/quality.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/models/Comment.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/models/Profession.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/models/Quality.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/models/Token.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/models/User.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/startUp/initDatabase.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/fast-company.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/config/default.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/config/default.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/.package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/node_modules/chalk/license" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/chalk/license" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/node_modules/chalk/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/chalk/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/node_modules/chalk/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/chalk/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/node_modules/chalk/source/index.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/node_modules/chalk/source/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/node_modules/chalk/source/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/node_modules/chalk/source/utilities.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/node_modules/chalk/source/vendor/ansi-styles/index.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/node_modules/chalk/source/vendor/ansi-styles/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/node_modules/chalk/source/vendor/supports-color/browser.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/node_modules/chalk/source/vendor/supports-color/browser.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/node_modules/chalk/source/vendor/supports-color/index.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/node_modules/chalk/source/vendor/supports-color/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2QQZmDoAasRaYkxAfmM094VkF7J" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/server/models" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="File.Encoding" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\github\react-fast-company\server\models" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="00967970-04d8-4ea6-af56-5ab878925bc1" name="Default Changelist" comment="" />
+      <created>1685287922503</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1685287922503</updated>
+      <workItem from="1685287923575" duration="6529000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
